@@ -1,12 +1,13 @@
+# load csv module
 import csv
-import pandas as pd
-import matplotlib.pyplot as plt
 
-# with open('ficheiros_competicao/loan_train.csv') as csv_file:
-#     csv_read=csv.reader(csv_file, delimiter=',')
+# open file for reading
+file_name = 'ficheiros_competicao/loan_test.csv'
+with open(file_name) as csvDataFile:
 
-csv_file="ficheiros_competicao/loan_train.csv"
-data = pd.read_csv(csv_file)
+    # read file as csv file, demilitador = ;
+    csvReader = csv.reader(csvDataFile, delimiter=';')
 
-print(Votes = data["TotalVotes"])
-sadmkhcgaskdhhgc
+    # for every row, print the row
+    for row in csvReader:
+        print(row)
