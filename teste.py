@@ -9,3 +9,4 @@ csv_file="ficheiros_competicao/loan_train.csv"
 data = pd.read_csv(csv_file)
 
 print(Votes = data["TotalVotes"])
+sadmkhcgaskdhhgc
