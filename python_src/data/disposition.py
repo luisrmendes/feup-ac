@@ -20,5 +20,8 @@ class Disposition:
     def add_account(self, account):
         self.account = account
 
+    def get_id(self):
+        return self.id
+
     def print(self):
         print(str(self.id), " | " + str(self.client.id) + " | " + str(self.account.id) + " | " + self.ownership.to_str())
