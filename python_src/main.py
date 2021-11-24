@@ -1,6 +1,8 @@
 from data.bank_data import Bank_Data
 from data.district import District
 from data.enum_types import Order
+from data.utils import *
+import matplotlib.pyplot as plt
 
 data = Bank_Data()
 
@@ -18,4 +20,21 @@ data.add_transanctions("data/ficheiros_competicao/trans_train.csv")
 #for member in list:
 #    member.print()
 
-data.print()
+# data.print()
+
+
+list2 = data.districts
+all_avg_salary = data.get_all(list2, District.get_average_salary)
+
+print(getAverage(all_avg_salary))
+
+
+# left_coordinates = [1, 2, 3, 4, 5]
+# heights = [10, 20, 30, 15, 40]
+# bar_labels = ['One', 'Two', 'Three', 'Four', 'Five']
+# plt.bar(left_coordinates, heights, tick_label=bar_labels,
+#         width=0.6, color=['red', 'black'])
+# plt.xlabel('X-axis')
+# plt.ylabel('Y-axis')
+# plt.title("A simple bar graph")
+# plt.show()

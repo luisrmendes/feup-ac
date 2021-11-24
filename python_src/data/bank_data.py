@@ -149,6 +149,15 @@ class Bank_Data:
                 ret.append(member)
         return ret        
 
+    def get_all(self, list, get):
+        result = []
+        for element in list:
+            result.append(get(element))
+        return result
+
+
+
+
     def print(self):
         #for district in self.districts:
         #    district.print()
