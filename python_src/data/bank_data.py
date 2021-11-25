@@ -19,6 +19,24 @@ class Bank_Data:
         self.cards = []
         self.transanctions = []
 
+    def get_client_with_loans(self):
+        returnList = []
+        for loan in self.loans:
+            for disposition in self.dispositions:
+                if loan.account == disposition.account:
+                    returnList.append(disposition.client)
+                                
+        return returnList
+
+    def get_client_from_disposition(self, disposition):
+        returnList = []
+        for client in self.clients:
+            if (disposition.client == client):
+                returnList.insert(client)
+        
+        return returnList
+
+
     def add_districts(self, file):
         with open(file, newline='') as csvfile:
             districts = list(csv.reader(csvfile, delimiter=';'))

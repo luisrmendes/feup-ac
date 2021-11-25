@@ -18,5 +18,17 @@ class Loan:
     def get_id(self):
         return self.id
 
+    def get_ammount(self):
+        return self.ammount
+    
+    def get_duration(self):
+        return self.duration
+
+    def get_payments(self):
+        return self.payments
+        
+    def get_status(self):
+        return self.status
+
     def print(self):
         print(str(self.id) + " | " + str(self.account.id) + " | " + self.date.to_str() + " | " + str(self.ammount) + " | " + str(self.duration) + " | " + str(self.payments) + " | " + str(self.status))

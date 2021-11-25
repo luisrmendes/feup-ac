@@ -28,3 +28,4 @@ data.add_transanctions("data/ficheiros_competicao/trans_train.csv")
 # print(getAverage(all_avg_salary))
 
 Metrics.display_client_metrics(data)
+Metrics.display_loan_metrics(data)

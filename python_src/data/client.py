@@ -16,6 +16,9 @@ class Client:
     def get_id(self):
         return self.id
 
+    def get_gender(self):
+        return self.gender.to_str()
+
     def get_birth_date_yymmdd(self):
         return self.birth_date.get_yymmdd()
     
