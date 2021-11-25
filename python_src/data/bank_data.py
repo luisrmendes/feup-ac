@@ -95,7 +95,7 @@ class Bank_Data:
         i = 0
         for transaction in transactions:
             trans = Transaction(transaction[0], transaction[2], transaction[3], transaction[4], transaction[5], transaction[6], transaction[7], transaction[8], transaction[9])
-            trans.add_account(self.get_by_id(self.accounts, int(transaction[1])))
+            # trans.add_account(self.get_by_id(self.accounts, int(transaction[1])))
             self.transanctions.append(trans)
             i = i+1
             if (i%10000 == 0):print(i)
@@ -154,9 +154,6 @@ class Bank_Data:
         for element in list:
             result.append(get(element))
         return result
-
-
-
 
     def print(self):
         #for district in self.districts:

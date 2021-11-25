@@ -25,5 +25,11 @@ class Date:
         self.yymmdd = self.year * 10000 + self.month * 100 + self.day
         return gender
 
+    def get_yymmdd(self):
+        return int(self.yymmdd)
+
+    def get_year(self):
+        return int(self.year)
+
     def to_str(self):
         return str(self.day) + '/' + str(self.month) + '/' + str(self.year)
