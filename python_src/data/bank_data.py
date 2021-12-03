@@ -17,7 +17,16 @@ class Bank_Data:
         self.dispositions = []
         self.loans = []
         self.cards = []
-        self.transanctions = []
+        self.transactions = []
+
+    def get_transactions_with_loans(self):
+        returnList = []
+        for loan in self.loans:
+            for transactions in self.transactions:
+                if loan.account == transactions.account:
+                    returnList.append(transactions)
+                                
+        return returnList
 
     def get_client_with_loans(self):
         returnList = []
@@ -104,7 +113,7 @@ class Bank_Data:
             ca.add_disposition(self.get_by_id(self.dispositions, int(card[1])))
             self.cards.append(ca)
 
-    def add_transanctions(self, file):
+    def add_transactions(self, file):
         with open(file, newline='') as csvfile:
             transactions = list(csv.reader(csvfile, delimiter=';'))
 
@@ -113,8 +122,8 @@ class Bank_Data:
         i = 0
         for transaction in transactions:
             trans = Transaction(transaction[0], transaction[2], transaction[3], transaction[4], transaction[5], transaction[6], transaction[7], transaction[8], transaction[9])
-            # trans.add_account(self.get_by_id(self.accounts, int(transaction[1])))
-            self.transanctions.append(trans)
+            trans.add_account(self.get_by_id(self.accounts, int(transaction[1])))
+            self.transactions.append(trans)
             i = i+1
             if (i%10000 == 0):print(i)
 
@@ -186,6 +195,6 @@ class Bank_Data:
         #    loan.print()
         #for card in self.cards:
         #    card.print()
-        for transaction in self.transanctions:
+        for transaction in self.transactions:
             transaction.print()
         pass

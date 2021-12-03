@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 from data.date import Date
 from data.client import Client
 from data.loan import Loan
+from data.transaction import Transaction
+from data.enum_types import TransactionType
 import statistics
 
 
@@ -185,6 +187,38 @@ def display_loan_metrics(data):
     axs[1, 2].bar(left_coordinates6, heights6, tick_label=bar_labels6,
         width=0.6, color=['red', 'black'])
     valuelabel(axs[1, 2], left_coordinates6, heights6)
+
+    # Metricas de transactions
+    list_clients_with_transactions = data.get_transactions_with_loans()
+
+    # ----- Metricas de Transaction Types
+    list_of_transactions = data.get_all(list_clients_with_transactions, Transaction.get_type)
+    count_credit = 0
+    count_withdrawal = 0
+    count_withdrawal_in_cash = 0
+    for n in list_of_transactions:
+        print(n)
+        if n == TransactionType.Credit:
+            count_credit += 1
+        elif n == TransactionType.Withdrawal:
+            count_withdrawal += 1
+        elif n == TransactionType.WithdrawalInCash:
+            count_withdrawal_in_cash += 1
+
+    print(count_credit)
+    print(count_withdrawal)
+    print(count_withdrawal_in_cash)
+
+    left_coordinates7 = [1, 2, 3]
+    heights7 = [count_credit, count_withdrawal, count_withdrawal_in_cash]
+    bar_labels7 = ['Credit', 'Withdrawal', 'Withdrawal_in_cash']
+    
+    axs[2, 0].set_title("Transaction Type")
+    axs[2, 0].bar(left_coordinates7, heights7, tick_label=bar_labels7,
+        width=0.6, color=['red', 'black'])
+    valuelabel(axs[2, 0], left_coordinates7, heights7)
+
+    # print(list_of_transactions)
 
     plt.show()
     plt.close()

@@ -57,6 +57,12 @@ class Transaction:
     def add_account(self, account):
         self.account = account
 
+    def get_type(self):
+        return self.type
+
+    def get_account(self):
+        return self.account
+
     def get_id(self):
         return self.id
 
