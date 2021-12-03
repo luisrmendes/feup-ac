@@ -20,6 +20,12 @@ class Account:
     def add_district(self, district):
         self.district = district
 
+    def get_date(self):
+        return self.date
+
+    def get_frequency(self):
+        return self.frequency
+
     def get_id(self):
         return self.id
 

@@ -18,6 +18,9 @@ class Loan:
     def get_id(self):
         return self.id
 
+    def get_date(self):
+        return self.date
+
     def get_ammount(self):
         return self.ammount
     

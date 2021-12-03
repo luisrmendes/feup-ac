@@ -15,12 +15,10 @@ def getAverage(list):
     avg = sum_num / len(list)
     return avg
 
-
 def valuelabel(subPlot, weight, height):
     for i in range(len(weight)):
         subPlot.text(i+1, height[i], height[i], ha='center',
                  bbox=dict(facecolor='cyan', alpha=0.8))
-
 
 def display_client_metrics(data):
     list_clients = data.clients

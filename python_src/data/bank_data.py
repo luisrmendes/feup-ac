@@ -19,12 +19,26 @@ class Bank_Data:
         self.cards = []
         self.transactions = []
 
+    def get_transactions_with_accounts(self, accounts):
+        returnList = []
+        for account in accounts:        
+            returnList.append(loan.account)
+                                
+        return returnList
+
     def get_transactions_with_loans(self):
         returnList = []
         for loan in self.loans:
             for transactions in self.transactions:
                 if loan.account == transactions.account:
                     returnList.append(transactions)
+                                
+        return returnList
+
+    def get_accounts_with_loans(self):
+        returnList = []
+        for loan in self.loans:        
+            returnList.append(loan.account)
                                 
         return returnList
 
@@ -44,7 +58,6 @@ class Bank_Data:
                 returnList.insert(client)
         
         return returnList
-
 
     def add_districts(self, file):
         with open(file, newline='') as csvfile:

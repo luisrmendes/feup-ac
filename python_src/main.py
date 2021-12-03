@@ -3,6 +3,7 @@ from data.district import District
 from data.enum_types import Order
 
 import utils.metrics as Metrics
+import utils.csv_loader as CsvLoader
 
 data = Bank_Data()
 
@@ -12,7 +13,11 @@ data.add_accounts("data/ficheiros_competicao/account.csv")
 data.add_dispositions("data/ficheiros_competicao/disp.csv")
 data.add_loans("data/ficheiros_competicao/loan_train.csv")
 data.add_cards("data/ficheiros_competicao/card_train.csv")
-data.add_transactions("data/ficheiros_competicao/trans_train.csv")
+# data.add_transactions("data/ficheiros_competicao/trans_train.csv")
+
+# Load csv
+CsvLoader.populate_csv(data)
+
 
 #list = data.districts
 #list = data.quicksort(list, District.get_n_inhab, Order.Decreasing)
@@ -22,10 +27,11 @@ data.add_transactions("data/ficheiros_competicao/trans_train.csv")
 
 # data.print()
 
-
 # list2 = data.districts
 # all_avg_salary = data.get_all(list2, District.get_average_salary)
 # print(getAverage(all_avg_salary))
 
 # Metrics.display_client_metrics(data)
-Metrics.display_loan_metrics(data)
+# Metrics.display_loan_metrics(data)
+
+
