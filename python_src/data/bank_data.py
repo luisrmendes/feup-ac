@@ -22,6 +22,13 @@ class Bank_Data:
 
     # def get_demographics_from_client(self, clients):
 
+    def get_transactions_from_account(self, account):
+        returnList = []
+        for transaction in self.transactions:
+            if transaction.account == account:
+                returnList.append(transaction)
+
+        return returnList
 
     def get_credit_cards_from_dispositions(self, dispositions):
         returnList = []

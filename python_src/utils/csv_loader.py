@@ -22,11 +22,11 @@ def populate_csv(data):
     # LOANS
     loans = data.loans
     loan_ids = data.get_all(loans, Loan.get_id)
-    # loan_dates = data.get_all(loans, Loan.get_date)
-    # loan_ammounts = data.get_all(loans, Loan.get_ammount)
-    # loan_durations = data.get_all(loans, Loan.get_duration)
-    # loan_payments= data.get_all(loans, Loan.get_payments)
-    # loan_status= data.get_all(loans, Loan.get_status)
+    loan_dates = data.get_all(loans, Loan.get_date)
+    loan_ammounts = data.get_all(loans, Loan.get_ammount)
+    loan_durations = data.get_all(loans, Loan.get_duration)
+    loan_payments = data.get_all(loans, Loan.get_payments)
+    loan_status = data.get_all(loans, Loan.get_status)
 
 
     # ACCOUNTS
@@ -38,20 +38,33 @@ def populate_csv(data):
 
     # TRANSACTIONS loan.account_id=acount.account_id
 
-    # no_trans
-    # last_trans
-    # balance
-    # no_credit
-    # avg_ammount_withdrawal
-    # rng_ammount_withdrawal
-    # avg_ammount_credit
-    # rng_ammount_credit
-    # no_k_na
-    # no_k_hosehold
-    # no_k_old_age_pension
-    # no_k_insurrance_payment
-    # no_k_payment_for_statment
-    # no_k_sanction_interest_if_negative_balance
+
+    # Get transactions per account
+    transactions_number_per_account = []
+    transactions_last_balance = []
+
+    for i in range(len(accounts)):
+        account_transactions = data.get_transactions_from_account(accounts[i])
+        
+        # no_trans
+        # last_trans
+        # balance
+        # no_credit
+        # avg_ammount_withdrawal
+        # rng_ammount_withdrawal
+        # avg_ammount_credit
+        # rng_ammount_credit
+        # no_k_na
+        # no_k_hosehold
+        # no_k_old_age_pension
+        # no_k_insurrance_payment
+        # no_k_payment_for_statment
+        # no_k_sanction_interest_if_negative_balance
+
+        transactions_number_per_account.append(len(account_transactions))
+        last_transaction = 
+        transactions_last_balance
+        
 
     transactions = data.get_transactions_from_accounts(accounts)
     transactions_ids = data.get_all(transactions, Transaction.get_id)
@@ -105,7 +118,28 @@ def populate_csv(data):
     # no_of_commited_crimes_95
     # no_of_commited_crimes_96
 
+    print(len(loan_ids))
+    print(len(account_ids))
 
-    # writer.writerow(list_of_account_ids)
+    for i in range(len(loans)):
+        row = []
+
+        row.append(loan_ids[i])
+        row.append(loan_dates[i].get_year())
+        row.append(loan_ammounts[i])
+        row.append(loan_durations[i])
+        row.append(loan_payments[i])
+        row.append(loan_status[i])
+
+        row.append(account_ids[i])
+        row.append(account_dates[i].get_year())
+        row.append(account_frequency[i])
+
+        
+        row.append(account_dates[i])
+
+        writer.writerow(row)
+
+
 
     # write a row to the csv file

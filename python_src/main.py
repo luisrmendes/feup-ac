@@ -15,7 +15,7 @@ data.add_loans("data/ficheiros_competicao/loan_train.csv")
 data.add_cards("data/ficheiros_competicao/card_train.csv")
 
 print("Adding transactions . . .\n")
-# data.add_transactions("data/ficheiros_competicao/trans_train.csv")
+data.add_transactions("data/ficheiros_competicao/trans_train.csv")
 print("Finish importing data\n")
 
 
