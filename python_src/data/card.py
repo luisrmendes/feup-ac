@@ -21,6 +21,12 @@ class Card:
     def add_disposition(self, dispoisition):
         self.disposition = dispoisition
 
+    def get_issue_date(self):
+        return self.issued
+
+    def get_type(self):
+        return self.type
+
     def get_id(self):
         return self.id
 

@@ -9,6 +9,7 @@ from data.enum_types import Order
 import operator
 import csv
 
+
 class Bank_Data:
     def __init__(self):
         self.districts = []
@@ -19,10 +20,42 @@ class Bank_Data:
         self.cards = []
         self.transactions = []
 
-    def get_transactions_with_accounts(self, accounts):
+    # def get_demographics_from_client(self, clients):
+
+
+    def get_credit_cards_from_dispositions(self, dispositions):
         returnList = []
-        for account in accounts:        
-            returnList.append(loan.account)
+        for disposition in dispositions:
+            for card in self.cards:
+                if card.disposition == disposition:
+                    returnList.append(card)
+        
+        return returnList
+
+    def get_clients_from_dispositions(self, dispositions):
+        returnList = []
+        for disposition in dispositions:
+            for client in self.clients:
+                if disposition.client == client:
+                    returnList.append(client)
+        
+        return returnList
+
+    def get_dispositions_from_accounts(self, accounts):
+        returnList = []
+        for account in accounts:
+            for disposition in self.dispositions:
+                if account == disposition.account:
+                    returnList.append(disposition)
+                                
+        return returnList
+
+    def get_transactions_from_accounts(self, accounts):
+        returnList = []
+        for transaction in self.transactions:
+            for account in accounts:
+                if account == transaction.account:
+                    returnList.append(transaction)
                                 
         return returnList
 
@@ -132,13 +165,11 @@ class Bank_Data:
 
         transactions.pop(0)
         
-        i = 0
         for transaction in transactions:
             trans = Transaction(transaction[0], transaction[2], transaction[3], transaction[4], transaction[5], transaction[6], transaction[7], transaction[8], transaction[9])
             trans.add_account(self.get_by_id(self.accounts, int(transaction[1])))
             self.transactions.append(trans)
-            i = i+1
-            if (i%10000 == 0):print(i)
+           
 
     def get_by_id(self,list,id):
         if id < len(list):
@@ -196,17 +227,17 @@ class Bank_Data:
         return result
 
     def print(self):
-        #for district in self.districts:
+        # for district in self.districts:
         #    district.print()
-        #for client in self.clients:
+        # for client in self.clients:
         #    client.print()
-        #for account in self.accounts:
+        # for account in self.accounts:
         #    account.print()
-        #for disposition in self.dispositions:
+        # for disposition in self.dispositions:
         #    disposition.print()
-        #for loan in self.loans:
+        # for loan in self.loans:
         #    loan.print()
-        #for card in self.cards:
+        # for card in self.cards:
         #    card.print()
         for transaction in self.transactions:
             transaction.print()

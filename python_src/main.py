@@ -13,7 +13,11 @@ data.add_accounts("data/ficheiros_competicao/account.csv")
 data.add_dispositions("data/ficheiros_competicao/disp.csv")
 data.add_loans("data/ficheiros_competicao/loan_train.csv")
 data.add_cards("data/ficheiros_competicao/card_train.csv")
+
+print("Adding transactions . . .\n")
 # data.add_transactions("data/ficheiros_competicao/trans_train.csv")
+print("Finish importing data\n")
+
 
 # Load csv
 CsvLoader.populate_csv(data)

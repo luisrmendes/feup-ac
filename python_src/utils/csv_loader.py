@@ -6,6 +6,11 @@ from data.client import Client
 from data.loan import Loan
 from data.transaction import Transaction
 from data.account import Account
+from data.disposition import Disposition
+from data.card import Card
+from data.enum_types import CardType
+
+
 
 
 def populate_csv(data):
@@ -17,26 +22,21 @@ def populate_csv(data):
     # LOANS
     loans = data.loans
     loan_ids = data.get_all(loans, Loan.get_id)
-    loan_dates = data.get_all(loans, Loan.get_date)
-    loan_ammounts = data.get_all(loans, Loan.get_ammount)
-    loan_durations = data.get_all(loans, Loan.get_duration)
-    loan_payments= data.get_all(loans, Loan.get_payments)
-    loan_status= data.get_all(loans, Loan.get_status)
+    # loan_dates = data.get_all(loans, Loan.get_date)
+    # loan_ammounts = data.get_all(loans, Loan.get_ammount)
+    # loan_durations = data.get_all(loans, Loan.get_duration)
+    # loan_payments= data.get_all(loans, Loan.get_payments)
+    # loan_status= data.get_all(loans, Loan.get_status)
 
 
     # ACCOUNTS
     accounts = data.get_accounts_with_loans()
     account_ids = data.get_all(accounts, Account.get_id)
     account_dates = data.get_all(accounts, Account.get_date)
-    account_ammounts = data.get_all(accounts, Account.get_frequency)
-    account_dates = data.get_all(accounts, Account.get_date)
-    account_dates = data.get_all(accounts, Account.get_date)
-    account_dates = data.get_all(accounts, Account.get_date)
+    account_frequency = data.get_all(accounts, Account.get_frequency)
 
-    print(account_ids)
 
     # TRANSACTIONS loan.account_id=acount.account_id
-    transactions = data.get_transactions_with_accounts(accounts)
 
     # no_trans
     # last_trans
@@ -53,18 +53,42 @@ def populate_csv(data):
     # no_k_payment_for_statment
     # no_k_sanction_interest_if_negative_balance
 
-    # # CLIENTS loan.account_id=disposition.account_id  disposition.client_id=client.client_id
+    transactions = data.get_transactions_from_accounts(accounts)
+    transactions_ids = data.get_all(transactions, Transaction.get_id)
+    transactions_dates = data.get_all(transactions, Transaction.get_date)
+    transactions_balance = data.get_all(transactions, Transaction.get_balance)
+    transactions_type = data.get_all(transactions, Transaction.get_type)
+    transactions_amount = data.get_all(transactions, Transaction.get_amount)
+    transactions_k_symbol = data.get_all(transactions, Transaction.get_k_symbol)
+
+
+    # CLIENTS loan.account_id=disposition.account_id  disposition.client_id=client.client_id
+    dispositions = data.get_dispositions_from_accounts(accounts)
+    disposition_ids = data.get_all(dispositions, Disposition.get_id)
+    disposition_ownerships = data.get_all(dispositions, Disposition.get_ownership)
+
+    clients = data.get_clients_from_dispositions(dispositions)
     # no_clients
+    # client_birth_number
+    clients_gender = data.get_all(clients, Client.get_gender)
+    clients_birth_date_year = data.get_all(clients, Client.get_birth_date_year)
 
-    # # disposition.type == "Owner"
-    # owner_birth_number
 
-    # # CREDIT CARDS loan.account_id=disposition.account_id disposition.type=="Owner"
+    # CREDIT CARDS loan.account_id=disposition.account_id disposition.type=="Owner"
+    credit_cards = data.get_credit_cards_from_dispositions(dispositions)
+    credit_card_ids = data.get_all(credit_cards, Card.get_id)
     # no_credit_cards
     # credit_card_type 
     # credit_card_issued_date
+    
+    credit_card_types = data.get_all(credit_cards, Card.get_type)
+    credit_card_issue_date = data.get_all(credit_cards, Card.get_issue_date)
+    
 
-    # # DEMOGRAPHIC DATA loan.account_id=account.account_id account.district_id=demograph.district_id
+    # DEMOGRAPHIC DATA loan.account_id=account.account_id account.district_id=demograph.district_id
+    # loan.account_id -> account.account_id -> disposition.client_id -> client.district_id
+    demographics = data.get_clients_from_dispositions(dispositions)
+
     # district_name
     # region
     # no_Inhabitants

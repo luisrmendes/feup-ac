@@ -14,6 +14,9 @@ class Disposition:
         self.client = Client()
         self.account = Account()
     
+    def get_ownership(self):
+        return self.ownership
+
     def add_client(self, client):
         self.client = client
 

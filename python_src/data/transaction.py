@@ -3,7 +3,8 @@ from data.enum_types import TransactionType, Operation, KSymbol
 from data.account import Account
 
 class Transaction:
-    def __init__(self, id = 0, date = Date(), type = "credit", operation = "credit in cash", amount = 0, balance = 0, k_symbol = "household", bank = "", account = 0):
+    def __init__(self, id = 0, date = Date(), type = "credit", operation = "credit in cash", 
+            amount = 0, balance = 0, k_symbol = "household", bank = "", account = 0):
         self.id = int(id)
         self.date = Date()
         self.date.set_from_YYMMDD(int(date))
@@ -56,6 +57,18 @@ class Transaction:
 
     def add_account(self, account):
         self.account = account
+
+    def get_k_symbol(self):
+        return self.k_symbol
+
+    def get_amount(self):
+        return self.amount
+
+    def get_balance(self):
+        return self.balance
+
+    def get_date(self):
+        return self.date
 
     def get_type(self):
         return self.type
