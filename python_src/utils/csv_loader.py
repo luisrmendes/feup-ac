@@ -8,8 +8,8 @@ from data.transaction import Transaction
 from data.account import Account
 from data.disposition import Disposition
 from data.card import Card
-from data.enum_types import CardType
-
+from data.enum_types import *
+import statistics
 
 
 
@@ -38,10 +38,24 @@ def populate_csv(data):
 
     # TRANSACTIONS loan.account_id=acount.account_id
 
-
     # Get transactions per account
     transactions_number_per_account = []
-    transactions_last_balance = []
+    last_transaction_date_per_account = []
+    transactions_last_balance_per_account = []
+    no_transactions_type_credit_per_account = []
+    avg_amount_of_transaction_credit_per_account = []
+    max_amount_of_transaction_credit_per_account = []
+    min_amount_of_transaction_credit_per_account = []
+    avg_amount_of_transaction_withdrawal_per_account = []
+    max_amount_of_transaction_withdrawal_per_account = []
+    min_amount_of_transaction_withdrawal_per_account = []
+    no_k_na_of_transaction_per_account = []
+    no_k_household_of_transaction_per_account = []
+    no_k_interest_credited_of_transaction_per_account = []
+    no_k_old_age_pension_of_transaction_per_account = []
+    no_k_insurrance_payment_of_transaction_per_account = []
+    no_k_payment_for_statement_of_transaction_per_account = []
+    no_k_sanction_interest_if_negative_balance_of_transaction_per_account = []
 
     for i in range(len(accounts)):
         account_transactions = data.get_transactions_from_account(accounts[i])
@@ -62,17 +76,86 @@ def populate_csv(data):
         # no_k_sanction_interest_if_negative_balance
 
         transactions_number_per_account.append(len(account_transactions))
-        last_transaction = 
-        transactions_last_balance
         
+        last_transaction = account_transactions[0];
+        for transaction in account_transactions:
+            if transaction.get_date().get_yymmdd() > last_transaction.get_date().get_yymmdd():
+                last_transaction = transaction
+                
 
-    transactions = data.get_transactions_from_accounts(accounts)
-    transactions_ids = data.get_all(transactions, Transaction.get_id)
-    transactions_dates = data.get_all(transactions, Transaction.get_date)
-    transactions_balance = data.get_all(transactions, Transaction.get_balance)
-    transactions_type = data.get_all(transactions, Transaction.get_type)
-    transactions_amount = data.get_all(transactions, Transaction.get_amount)
-    transactions_k_symbol = data.get_all(transactions, Transaction.get_k_symbol)
+        last_transaction_date_per_account.append(last_transaction.get_date().get_yymmdd())
+        transactions_last_balance_per_account.append(last_transaction.get_balance())
+
+        ammounts_credit = []
+        ammounts_withdrawal = []
+        for transaction in account_transactions:
+            if transaction.get_type() == TransactionType.Credit:
+                ammounts_credit.append(transaction.get_amount())
+            else:
+                ammounts_withdrawal.append(transaction.get_amount())
+
+        no_transactions_type_credit_per_account.append(len(ammounts_credit))
+        
+        if (len(ammounts_credit) != 0):
+            avg_amount_of_transaction_credit_per_account.append(statistics.mean(ammounts_credit))
+            max_amount_of_transaction_credit_per_account.append(max(ammounts_credit))
+            min_amount_of_transaction_credit_per_account.append(min(ammounts_credit))
+        else:
+            avg_amount_of_transaction_credit_per_account.append(0)
+            max_amount_of_transaction_credit_per_account.append(0)
+            min_amount_of_transaction_credit_per_account.append(0)
+        
+        if (len(ammounts_withdrawal) != 0):
+            avg_amount_of_transaction_withdrawal_per_account.append(statistics.mean(ammounts_withdrawal))
+            max_amount_of_transaction_withdrawal_per_account.append(max(ammounts_withdrawal))
+            min_amount_of_transaction_withdrawal_per_account.append(min(ammounts_withdrawal))
+        else:
+            avg_amount_of_transaction_withdrawal_per_account.append(0)
+            max_amount_of_transaction_withdrawal_per_account.append(0)
+            min_amount_of_transaction_withdrawal_per_account.append(0)
+
+        no_k_na = 0
+        no_k_household = 0
+        no_k_interest_credited = 0
+        no_k_old_age_pension = 0
+        no_k_insurrance_payment = 0
+        no_k_payment_for_statement = 0
+        no_k_sanction_interest_if_negative_balance = 0
+
+        for transaction in account_transactions:
+            if transaction.get_k_symbol() == KSymbol.NA:
+                no_k_na += 1
+            elif transaction.get_k_symbol() == KSymbol.Household:
+                no_k_household += 1
+            elif transaction.get_k_symbol() == KSymbol.InterestCredited:
+                no_k_interest_credited += 1
+            elif transaction.get_k_symbol() == KSymbol.OldAgePension:
+                no_k_old_age_pension += 1
+            elif transaction.get_k_symbol() == KSymbol.InsurrancePayment:
+                no_k_insurrance_payment += 1
+            elif transaction.get_k_symbol() == KSymbol.PaymentForStatement:
+                no_k_payment_for_statement += 1
+            elif transaction.get_k_symbol() == KSymbol.SanctionInterestIfNegativeBalance:
+                no_k_sanction_interest_if_negative_balance += 1            
+            else:
+                print("k_symbol not recognized")
+
+        no_k_na_of_transaction_per_account.append(no_k_na)
+        no_k_household_of_transaction_per_account.append(no_k_household)
+        no_k_interest_credited_of_transaction_per_account.append(no_k_interest_credited)
+        no_k_old_age_pension_of_transaction_per_account.append(no_k_old_age_pension)
+        no_k_insurrance_payment_of_transaction_per_account.append(no_k_insurrance_payment)
+        no_k_payment_for_statement_of_transaction_per_account.append(no_k_payment_for_statement)
+        no_k_sanction_interest_if_negative_balance_of_transaction_per_account.append(no_k_sanction_interest_if_negative_balance)
+
+
+    # transactions = data.get_transactions_from_accounts(accounts)
+    # transactions_ids = data.get_all(transactions, Transaction.get_id)
+    # transactions_dates = data.get_all(transactions, Transaction.get_date)
+    # transactions_balance = data.get_all(transactions, Transaction.get_balance)
+    # transactions_type = data.get_all(transactions, Transaction.get_type)
+    # transactions_amount = data.get_all(transactions, Transaction.get_amount)
+    # transactions_k_symbol = data.get_all(transactions, Transaction.get_k_symbol)
 
 
     # CLIENTS loan.account_id=disposition.account_id  disposition.client_id=client.client_id
@@ -134,9 +217,24 @@ def populate_csv(data):
         row.append(account_ids[i])
         row.append(account_dates[i].get_year())
         row.append(account_frequency[i])
-
         
-        row.append(account_dates[i])
+        row.append(transactions_number_per_account[i])
+        row.append(last_transaction_date_per_account[i])
+        row.append(transactions_last_balance_per_account[i])
+        row.append(no_transactions_type_credit_per_account[i])
+        row.append(avg_amount_of_transaction_credit_per_account[i])
+        row.append(max_amount_of_transaction_credit_per_account[i])
+        row.append(min_amount_of_transaction_credit_per_account[i])
+        row.append(avg_amount_of_transaction_withdrawal_per_account[i])
+        row.append(max_amount_of_transaction_withdrawal_per_account[i])
+        row.append(min_amount_of_transaction_withdrawal_per_account[i])
+        row.append(no_k_na_of_transaction_per_account[i])
+        row.append(no_k_household_of_transaction_per_account[i])
+        row.append(no_k_interest_credited_of_transaction_per_account[i])
+        row.append(no_k_old_age_pension_of_transaction_per_account[i])
+        row.append(no_k_insurrance_payment_of_transaction_per_account[i])
+        row.append(no_k_payment_for_statement_of_transaction_per_account[i])
+        row.append(no_k_sanction_interest_if_negative_balance_of_transaction_per_account[i])
 
         writer.writerow(row)
 
