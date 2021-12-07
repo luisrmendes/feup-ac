@@ -12,12 +12,9 @@ from data.enum_types import *
 import statistics
 
 
-
 def populate_csv(data):
-    f = open('dataMining.csv', 'a')
 
-    # create the csv writer
-    writer = csv.writer(f)
+    print("Generating data . . .\n")
 
     # LOANS
     loans = data.loans
@@ -36,9 +33,7 @@ def populate_csv(data):
     account_frequency = data.get_all(accounts, Account.get_frequency)
 
 
-    # TRANSACTIONS loan.account_id=acount.account_id
-
-    # Get transactions per account
+    # TRANSACTIONS: transactions per account -> loan.account_id=acount.account_id
     transactions_number_per_account = []
     last_transaction_date_per_account = []
     transactions_last_balance_per_account = []
@@ -177,6 +172,7 @@ def populate_csv(data):
 
     for i in range(len(accounts)):
         disposition = data.get_owner_disposition_from_account(accounts[i])
+        
         client_of_disposition = data.get_clients_of_disposition(disposition[0])
         client_gender_per_account.append(client_of_disposition[0].get_gender())
         client_birth_year_per_account.append(client_of_disposition[0].get_birth_date_year())
@@ -190,7 +186,24 @@ def populate_csv(data):
             client_credit_card_type_per_account.append(0)
             client_credit_card_issue_date_per_account.append(0)
 
+
         demographics = data.get_demograph_from_client(client_of_disposition[0])
+
+        # district_name
+        # region
+        # no_Inhabitants
+        # no_of_municipalities_with_inhabitants_less_499
+        # no_of_municipalities_with_inhabitants_between_500_1999
+        # no_of_municipalities_with_inhabitants_between_2000_9999
+        # no_of_municipalities_with_inhabitants_greater_10000
+        # no_of_cities
+        # ratio_of_urban_inhabitants
+        # average_salary
+        # unemploymant_rate_95
+        # unemploymant_rate_96
+        # no_of_enterpreneurs_per_1000_inhabitants
+        # no_of_commited_crimes_95
+        # no_of_commited_crimes_96
 
         owner_district_name_per_account.append(demographics[0].get_name())
         owner_region_per_account.append(demographics[0].get_region())
@@ -207,47 +220,11 @@ def populate_csv(data):
         owner_district_n_enterp_per_1000_per_account.append(demographics[0].get_n_enterp_per_1000())
         owner_district_n_crimes_95_per_account.append(demographics[0].get_n_crimes_95())
         owner_district_n_crimes_96_per_account.append(demographics[0].get_n_crimes_96())
+  
+    print("Creating CSV . . .\n")
 
-    # disposition_ids = data.get_all(dispositions, Disposition.get_id)
-    # disposition_ownerships = data.get_all(dispositions, Disposition.get_ownership)
-
-    # clients = data.get_clients_from_dispositions(dispositions)
-    # # no_clients
-    # # client_birth_number
-    # clients_gender = data.get_all(clients, Client.get_gender)
-    # clients_birth_date_year = data.get_all(clients, Client.get_birth_date_year)
-
-
-    # # CREDIT CARDS loan.account_id=disposition.account_id disposition.type=="Owner"
-    # credit_cards = data.get_credit_cards_from_dispositions(dispositions)
-    # credit_card_ids = data.get_all(credit_cards, Card.get_id)
-    # # no_credit_cards
-    # # credit_card_type 
-    # # credit_card_issued_date
-    
-    # credit_card_types = data.get_all(credit_cards, Card.get_type)
-    # credit_card_issue_date = data.get_all(credit_cards, Card.get_issue_date)
-    
-
-    # # DEMOGRAPHIC DATA loan.account_id=account.account_id account.district_id=demograph.district_id
-    # # loan.account_id -> account.account_id -> disposition.client_id -> client.district_id
-    # demographics = data.get_clients_from_dispositions(dispositions)
-
-    # district_name
-    # region
-    # no_Inhabitants
-    # no_of_municipalities_with_inhabitants_less_499
-    # no_of_municipalities_with_inhabitants_between_500_1999
-    # no_of_municipalities_with_inhabitants_between_2000_9999
-    # no_of_municipalities_with_inhabitants_greater_10000
-    # no_of_cities
-    # ratio_of_urban_inhabitants
-    # average_salary
-    # unemploymant_rate_95
-    # unemploymant_rate_96
-    # no_of_enterpreneurs_per_1000_inhabitants
-    # no_of_commited_crimes_95
-    # no_of_commited_crimes_96
+    f = open('dataMining.csv', 'a')
+    writer = csv.writer(f)
 
     for i in range(len(loans)):
         row = []
@@ -301,7 +278,3 @@ def populate_csv(data):
         row.append(owner_district_n_crimes_96_per_account[i])
         
         writer.writerow(row)
-
-
-
-    # write a row to the csv file

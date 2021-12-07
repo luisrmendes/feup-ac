@@ -1,26 +1,38 @@
 from data.bank_data import Bank_Data
 from data.district import District
 from data.enum_types import Order
+from os.path import exists
 
 import utils.metrics as Metrics
 import utils.csv_loader as CsvLoader
 
-data = Bank_Data()
+if not exists("dataMining.csv"):
+    print("dataMining.csv not found, generating . . .\n")
+    
+    data = Bank_Data()
 
-data.add_districts("data/ficheiros_competicao/district.csv")
-data.add_clients("data/ficheiros_competicao/client.csv")
-data.add_accounts("data/ficheiros_competicao/account.csv")
-data.add_dispositions("data/ficheiros_competicao/disp.csv")
-data.add_loans("data/ficheiros_competicao/loan_train.csv")
-data.add_cards("data/ficheiros_competicao/card_train.csv")
+    print("Loading districts . . .\n")
+    data.add_districts("data/ficheiros_competicao/district.csv")
+    print("Loading clients . . .\n")
+    data.add_clients("data/ficheiros_competicao/client.csv")
+    print("Loading accounts . . .\n")
+    data.add_accounts("data/ficheiros_competicao/account.csv")
+    print("Loading dispositions . . .\n")
+    data.add_dispositions("data/ficheiros_competicao/disp.csv")
+    print("Loading loans . . .\n")
+    data.add_loans("data/ficheiros_competicao/loan_train.csv")
+    print("Loading cards . . .\n")
+    data.add_cards("data/ficheiros_competicao/card_train.csv")
+    print("Loading transactions . . .\n")
+    data.add_transactions("data/ficheiros_competicao/trans_train.csv")
 
-print("Adding transactions . . .\n")
-data.add_transactions("data/ficheiros_competicao/trans_train.csv")
-print("Finish importing data\n")
+    # Load csv
+    CsvLoader.populate_csv(data)
 
+    print("Done\n")
+else:
+    print("dataMining.csv exists, not generating\n")
 
-# Load csv
-CsvLoader.populate_csv(data)
 
 
 #list = data.districts
