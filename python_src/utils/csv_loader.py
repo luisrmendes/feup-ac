@@ -149,41 +149,89 @@ def populate_csv(data):
         no_k_sanction_interest_if_negative_balance_of_transaction_per_account.append(no_k_sanction_interest_if_negative_balance)
 
 
-    # transactions = data.get_transactions_from_accounts(accounts)
-    # transactions_ids = data.get_all(transactions, Transaction.get_id)
-    # transactions_dates = data.get_all(transactions, Transaction.get_date)
-    # transactions_balance = data.get_all(transactions, Transaction.get_balance)
-    # transactions_type = data.get_all(transactions, Transaction.get_type)
-    # transactions_amount = data.get_all(transactions, Transaction.get_amount)
-    # transactions_k_symbol = data.get_all(transactions, Transaction.get_k_symbol)
-
-
     # CLIENTS loan.account_id=disposition.account_id  disposition.client_id=client.client_id
-    dispositions = data.get_dispositions_from_accounts(accounts)
-    disposition_ids = data.get_all(dispositions, Disposition.get_id)
-    disposition_ownerships = data.get_all(dispositions, Disposition.get_ownership)
+    client_gender_per_account = []
+    client_birth_year_per_account = []
+    # client_no_credit_cards_per_account = []
+    client_credit_card_type_per_account = []
+    client_credit_card_issue_date_per_account = []
 
-    clients = data.get_clients_from_dispositions(dispositions)
-    # no_clients
-    # client_birth_number
-    clients_gender = data.get_all(clients, Client.get_gender)
-    clients_birth_date_year = data.get_all(clients, Client.get_birth_date_year)
+    owner_district_name_per_account = []
+    owner_region_per_account = []
+    owner_district_n_inhab_per_account = []
+    owner_district_n_inhab_per_account = []
+    owner_district_n_inhab_per_account = []
+    owner_district_n_inhab_per_account = []
+    owner_district_n_mun_inhab_0_499_per_account = []
+    owner_district_n_mun_inhab_500_1999_per_account = []
+    owner_district_n_mun_inhab_2000_9999_per_account = []
+    owner_district_n_mun_inhab_10000_inf_per_account = []
+    owner_district_n_cities_per_account = []
+    owner_district_ratio_urban_inhab_per_account = []
+    owner_district_average_salary_per_account = []
+    owner_district_unemploymant_95_per_account = []
+    owner_district_unemploymant_96_per_account = []
+    owner_district_n_enterp_per_1000_per_account = []
+    owner_district_n_crimes_95_per_account = []
+    owner_district_n_crimes_96_per_account = []
+
+    for i in range(len(accounts)):
+        disposition = data.get_owner_disposition_from_account(accounts[i])
+        client_of_disposition = data.get_clients_of_disposition(disposition[0])
+        client_gender_per_account.append(client_of_disposition[0].get_gender())
+        client_birth_year_per_account.append(client_of_disposition[0].get_birth_date_year())
+        
+        credit_cards_of_disposition = data.get_credit_cards_of_disposition(disposition[0])
+        
+        if (len(credit_cards_of_disposition) != 0):
+            client_credit_card_type_per_account.append(credit_cards_of_disposition[0].get_type())
+            client_credit_card_issue_date_per_account.append(credit_cards_of_disposition[0].get_issue_date().get_yymmdd())
+        else:
+            client_credit_card_type_per_account.append(0)
+            client_credit_card_issue_date_per_account.append(0)
+
+        demographics = data.get_demograph_from_client(client_of_disposition[0])
+
+        owner_district_name_per_account.append(demographics[0].get_name())
+        owner_region_per_account.append(demographics[0].get_region())
+        owner_district_n_inhab_per_account.append(demographics[0].get_n_inhab())
+        owner_district_n_mun_inhab_0_499_per_account.append(demographics[0].get_n_mun_inhab_0_499())
+        owner_district_n_mun_inhab_500_1999_per_account.append(demographics[0].get_n_mun_inhab_500_1999())
+        owner_district_n_mun_inhab_2000_9999_per_account.append(demographics[0].get_n_mun_inhab_2000_9999())
+        owner_district_n_mun_inhab_10000_inf_per_account.append(demographics[0].get_n_mun_inhab_10000_inf())
+        owner_district_n_cities_per_account.append(demographics[0].get_n_cities())
+        owner_district_ratio_urban_inhab_per_account.append(demographics[0].get_ratio_urban_inhab())
+        owner_district_average_salary_per_account.append(demographics[0].get_average_salary())
+        owner_district_unemploymant_95_per_account.append(demographics[0].get_unemploymant_95())
+        owner_district_unemploymant_96_per_account.append(demographics[0].get_unemploymant_96())
+        owner_district_n_enterp_per_1000_per_account.append(demographics[0].get_n_enterp_per_1000())
+        owner_district_n_crimes_95_per_account.append(demographics[0].get_n_crimes_95())
+        owner_district_n_crimes_96_per_account.append(demographics[0].get_n_crimes_96())
+
+    # disposition_ids = data.get_all(dispositions, Disposition.get_id)
+    # disposition_ownerships = data.get_all(dispositions, Disposition.get_ownership)
+
+    # clients = data.get_clients_from_dispositions(dispositions)
+    # # no_clients
+    # # client_birth_number
+    # clients_gender = data.get_all(clients, Client.get_gender)
+    # clients_birth_date_year = data.get_all(clients, Client.get_birth_date_year)
 
 
-    # CREDIT CARDS loan.account_id=disposition.account_id disposition.type=="Owner"
-    credit_cards = data.get_credit_cards_from_dispositions(dispositions)
-    credit_card_ids = data.get_all(credit_cards, Card.get_id)
-    # no_credit_cards
-    # credit_card_type 
-    # credit_card_issued_date
+    # # CREDIT CARDS loan.account_id=disposition.account_id disposition.type=="Owner"
+    # credit_cards = data.get_credit_cards_from_dispositions(dispositions)
+    # credit_card_ids = data.get_all(credit_cards, Card.get_id)
+    # # no_credit_cards
+    # # credit_card_type 
+    # # credit_card_issued_date
     
-    credit_card_types = data.get_all(credit_cards, Card.get_type)
-    credit_card_issue_date = data.get_all(credit_cards, Card.get_issue_date)
+    # credit_card_types = data.get_all(credit_cards, Card.get_type)
+    # credit_card_issue_date = data.get_all(credit_cards, Card.get_issue_date)
     
 
-    # DEMOGRAPHIC DATA loan.account_id=account.account_id account.district_id=demograph.district_id
-    # loan.account_id -> account.account_id -> disposition.client_id -> client.district_id
-    demographics = data.get_clients_from_dispositions(dispositions)
+    # # DEMOGRAPHIC DATA loan.account_id=account.account_id account.district_id=demograph.district_id
+    # # loan.account_id -> account.account_id -> disposition.client_id -> client.district_id
+    # demographics = data.get_clients_from_dispositions(dispositions)
 
     # district_name
     # region
@@ -200,9 +248,6 @@ def populate_csv(data):
     # no_of_enterpreneurs_per_1000_inhabitants
     # no_of_commited_crimes_95
     # no_of_commited_crimes_96
-
-    print(len(loan_ids))
-    print(len(account_ids))
 
     for i in range(len(loans)):
         row = []
@@ -235,7 +280,26 @@ def populate_csv(data):
         row.append(no_k_insurrance_payment_of_transaction_per_account[i])
         row.append(no_k_payment_for_statement_of_transaction_per_account[i])
         row.append(no_k_sanction_interest_if_negative_balance_of_transaction_per_account[i])
-
+        
+        row.append(owner_district_name_per_account[i])
+        row.append(owner_region_per_account[i])
+        row.append(owner_district_n_inhab_per_account[i])
+        row.append(owner_district_n_inhab_per_account[i])
+        row.append(owner_district_n_inhab_per_account[i])
+        row.append(owner_district_n_inhab_per_account[i])
+        row.append(owner_district_n_mun_inhab_0_499_per_account[i])
+        row.append(owner_district_n_mun_inhab_500_1999_per_account[i])
+        row.append(owner_district_n_mun_inhab_2000_9999_per_account[i])
+        row.append(owner_district_n_mun_inhab_10000_inf_per_account[i])
+        row.append(owner_district_n_cities_per_account[i])
+        row.append(owner_district_ratio_urban_inhab_per_account[i])
+        row.append(owner_district_average_salary_per_account[i])
+        row.append(owner_district_unemploymant_95_per_account[i])
+        row.append(owner_district_unemploymant_96_per_account[i])
+        row.append(owner_district_n_enterp_per_1000_per_account[i])
+        row.append(owner_district_n_crimes_95_per_account[i])
+        row.append(owner_district_n_crimes_96_per_account[i])
+        
         writer.writerow(row)
 
 

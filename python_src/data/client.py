@@ -8,10 +8,10 @@ class Client:
         self.birth_date = Date()
         self.gender = Gender.Women
         self.gender = self.birth_date.set_from_YYMM50DD(int(birth_number))
-        self.ditrict = District()
+        self.district = District()
 
     def add_district(self, district):
-        self.ditrict = district
+        self.district = district
 
     def get_id(self):
         return self.id
@@ -26,4 +26,4 @@ class Client:
         return self.birth_date.get_year()
 
     def print(self):
-        print(str(self.id) + " | " + self.gender.to_str() + " | " + self.birth_date.to_str() + " | " + self.ditrict.name)
+        print(str(self.id) + " | " + self.gender.to_str() + " | " + self.birth_date.to_str() + " | " + self.district.name)

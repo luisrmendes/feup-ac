@@ -5,7 +5,7 @@ from data.disposition import Disposition
 from data.loan import Loan
 from data.card import Card
 from data.transaction import Transaction
-from data.enum_types import Order
+from data.enum_types import *
 import operator
 import csv
 
@@ -20,7 +20,37 @@ class Bank_Data:
         self.cards = []
         self.transactions = []
 
-    # def get_demographics_from_client(self, clients):
+    def get_demograph_from_client(self, client):
+        returnList = []
+        for district in self.districts:
+            if client.district == district:
+                returnList.append(district)
+
+        return returnList
+
+    def get_credit_cards_of_disposition(self, disposition):
+        returnList = []
+        for card in self.cards:
+            if card.disposition == disposition:
+                returnList.append(card)
+
+        return returnList
+
+    def get_clients_of_disposition(self, disposition):
+        returnList = []
+        for client in self.clients:
+            if disposition.client == client:
+                returnList.append(client)
+
+        return returnList
+
+    def get_owner_disposition_from_account(self, account):
+        returnList = []
+        for disposition in self.dispositions:
+            if (disposition.account == account) and (disposition.ownership == Ownership.Owner):
+                returnList.append(disposition)
+
+        return returnList
 
     def get_transactions_from_account(self, account):
         returnList = []

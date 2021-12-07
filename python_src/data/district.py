@@ -72,11 +72,50 @@ class District:
     def get_id(self):
         return self.code
 
+    def get_name(self):
+        return self.name
+
+    def get_region(self):
+        return self.region
+
     def get_n_inhab(self):
         return self.n_inhab
 
+    def get_n_mun_inhab_0_499(self):
+        return self.n_mun_inhab_0_499
+
+    def get_n_mun_inhab_500_1999(self):
+        return self.n_mun_inhab_500_1999
+
+    def get_n_mun_inhab_2000_9999(self):
+        return self.n_mun_inhab_2000_9999
+
+    def get_n_mun_inhab_10000_inf(self):
+        return self.n_mun_inhab_10000_inf
+
+    def get_n_cities(self):
+        return self.n_cities
+
+    def get_ratio_urban_inhab(self):
+        return self.ratio_urban_inhab
+
     def get_average_salary(self):
         return self.average_salary
+
+    def get_unemploymant_95(self):
+        return self.unemploymant_95
+
+    def get_unemploymant_96(self):
+        return self.unemploymant_96
+
+    def get_n_enterp_per_1000(self):
+        return self.n_enterp_per_1000
+
+    def get_n_crimes_95(self):
+        return self.n_crimes_95
+
+    def get_n_crimes_96(self):
+        return self.n_crimes_96
 
     def print(self):
         print(str(self.code) + " | " + self.name + " | " + self.region + " | " + str(self.n_inhab) + " | " + str(self.n_mun_inhab_0_499) + " | " + str(self.n_mun_inhab_500_1999) + " | " + str(self.n_mun_inhab_2000_9999) + " | " + str(self.n_mun_inhab_10000_inf) + " | " +
