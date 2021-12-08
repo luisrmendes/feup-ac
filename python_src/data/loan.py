@@ -9,7 +9,7 @@ class Loan:
         self.ammount = int(ammount)
         self.duration = int(duration)
         self.payments = int(payments)
-        if not isinstance (status,int):
+        if status == '':
             self.status = 0
         else:
             self.status = int(status)
