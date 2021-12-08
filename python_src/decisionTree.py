@@ -1,3 +1,4 @@
+import csv
 import numpy as np
 import pandas as pd
 from sklearn.metrics import confusion_matrix
@@ -8,20 +9,37 @@ from sklearn.metrics import classification_report
 import matplotlib.pyplot as plt
 import sklearn.tree as tree
   
+
 # Function importing Dataset
 def importdata():
-    balance_data = pd.read_csv(
+    train_data = pd.read_csv(
 'dataMining.csv',
+    sep= ',', header = None)
+
+    test_data = pd.read_csv(
+'dataMiningTrain.csv',
     sep= ',', header = None)
       
     # Printing the dataswet shape
-    print ("Dataset Length: ", len(balance_data))
-    print ("Dataset Shape: ", balance_data.shape)
+    print ("Dataset Length: ", len(train_data))
+    print ("Dataset Shape: ", train_data.shape)
       
     # Printing the dataset obseravtions
-    print ("Dataset: ",balance_data.head())
+    print ("Dataset: ",train_data.head())
 
-    return balance_data
+    return train_data, test_data
+
+def getfinaldata(balance_data, test_data):
+    X_train = np.c_[balance_data.values[:, 0:5], balance_data.values[:, 6:8], balance_data.values[:, 9:26], balance_data.values[:, 28:44]]
+    X_train = pd.DataFrame(X_train)
+    Y_train = balance_data.values[:, 5]
+    Y_train = pd.DataFrame(Y_train)
+    X_test = np.c_[test_data.values[:, 0:5], test_data.values[:, 6:8], test_data.values[:, 9:26], test_data.values[:, 28:44]]
+    X_test = pd.DataFrame(X_test)
+
+    Y_train[0] = Y_train[0].astype('category')
+
+    return X_train, Y_train, X_test
   
 # Function to split the dataset
 def splitdataset(balance_data):
@@ -134,8 +152,11 @@ def cal_accuracy(y_test, y_pred):
 
       
 # Building Phase
-data = importdata()
-X, Y, X_train, X_test, y_train, y_test = splitdataset(data)
+data, test_data = importdata()
+
+X_train, y_train, X_test = getfinaldata(data, test_data)
+
+#X, Y, X_train, X_test, y_train, y_test = splitdataset(data)
 clf_gini = train_using_gini(X_train, X_test, y_train)
 clf_entropy = tarin_using_entropy(X_train, X_test, y_train)
       
@@ -144,11 +165,27 @@ print("Results Using Gini Index:")
       
 # Prediction using gini
 y_pred_gini = prediction(X_test, clf_gini)
-cal_accuracy(y_test, y_pred_gini)
+#cal_accuracy(y_test, y_pred_gini)
       
 print("Results Using Entropy:")
 # Prediction using entropy
 y_pred_entropy = prediction(X_test, clf_entropy)
-cal_accuracy(y_test, y_pred_entropy)
+#cal_accuracy(y_test, y_pred_entropy)
 
-print(tree.export_text(clf_entropy))
+predic = clf_entropy.predict_proba(X_test)
+
+result = []
+for i in range(len(X_test)):
+    result.append([X_test[0][i], round(predic[i][1], 2)])
+
+print(result)
+
+f = open('result.csv', 'a')
+writer = csv.writer(f)
+
+for i in range(len(predic)):
+    row = []
+    row = result[i]
+    writer.writerow(row)
+
+#print(tree.export_text(clf_entropy))
