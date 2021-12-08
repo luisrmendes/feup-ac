@@ -9,7 +9,10 @@ class Loan:
         self.ammount = int(ammount)
         self.duration = int(duration)
         self.payments = int(payments)
-        self.status = int(status)
+        if not isinstance (status,int):
+            self.status = 0
+        else:
+            self.status = int(status)
         self.account = Account()
 
     def add_account(self, account):
