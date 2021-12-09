@@ -176,16 +176,14 @@ predic = clf_entropy.predict_proba(X_test)
 
 result = []
 for i in range(len(X_test)):
-    result.append([X_test[0][i], round(predic[i][1], 2)])
+    result.append([X_test[0][i], round(predic[i][0], 2)])
 
 print(result)
 
 f = open('result.csv', 'a')
 writer = csv.writer(f)
-
+writer.writerow(['Id', 'Predicted'])
 for i in range(len(predic)):
-    row = []
-    row = result[i]
-    writer.writerow(row)
+    writer.writerow(result[i])
 
-#print(tree.export_text(clf_entropy))
+print(tree.export_text(clf_entropy))
