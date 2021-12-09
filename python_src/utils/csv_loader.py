@@ -251,7 +251,7 @@ def populate_csv(data):
   
     print("Creating CSV . . .\n")
 
-    f = open('dataPrep.csv', 'a')
+    f = open('dataPrepTest.csv', 'a')
     writer = csv.writer(f)
 
     for i in range(len(loans)):

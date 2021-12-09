@@ -13,12 +13,12 @@ import sklearn.tree as tree
 # Function importing Dataset
 def importdata():
     train_data = pd.read_csv(
-'dataMining.csv',
-    sep= ',', header = None)
+        'dataPrep.csv',
+        sep= ',', header = None)
 
     test_data = pd.read_csv(
-'dataMiningTrain.csv',
-    sep= ',', header = None)
+        'dataPrepTest.csv',
+        sep= ',', header = None)
       
     # Printing the dataswet shape
     print ("Dataset Length: ", len(train_data))
@@ -44,7 +44,9 @@ def getfinaldata(balance_data, test_data):
 # Function to split the dataset
 def splitdataset(balance_data):
     # Separating the target variable
-    X = np.c_[balance_data.values[:, 0:5], balance_data.values[:, 6:8], balance_data.values[:, 9:26], balance_data.values[:, 28:44]]
+    # X = np.c_[balance_data.values[:, 0:5], balance_data.values[:, 6:8], balance_data.values[:, 9:26], balance_data.values[:, 28:44]]
+    X = np.c_[balance_data.values[:, 0:5], balance_data.values[:, 6:]]
+
     X = pd.DataFrame(X)
     Y = balance_data.values[:, 5]
     Y = pd.DataFrame(Y)
@@ -127,7 +129,6 @@ def tarin_using_entropy(X_train, X_test, y_train):
     clf_entropy.fit(X_train, y_train)
     return clf_entropy
   
-  
 # Function to make predictions
 def prediction(X_test, clf_object):
   
@@ -154,9 +155,10 @@ def cal_accuracy(y_test, y_pred):
 # Building Phase
 data, test_data = importdata()
 
-X_train, y_train, X_test = getfinaldata(data, test_data)
 
-#X, Y, X_train, X_test, y_train, y_test = splitdataset(data)
+X_train, y_train, X_test = getfinaldata(data, test_data)
+# X, Y, X_train, X_test, y_train, y_test = splitdataset(data)
+
 clf_gini = train_using_gini(X_train, X_test, y_train)
 clf_entropy = tarin_using_entropy(X_train, X_test, y_train)
       
@@ -165,18 +167,18 @@ print("Results Using Gini Index:")
       
 # Prediction using gini
 y_pred_gini = prediction(X_test, clf_gini)
-#cal_accuracy(y_test, y_pred_gini)
+# cal_accuracy(y_test, y_pred_gini)
       
 print("Results Using Entropy:")
 # Prediction using entropy
 y_pred_entropy = prediction(X_test, clf_entropy)
-#cal_accuracy(y_test, y_pred_entropy)
+# cal_accuracy(y_test, y_pred_entropy)
 
 predic = clf_entropy.predict_proba(X_test)
 
 result = []
 for i in range(len(X_test)):
-    result.append([X_test[0][i], round(predic[i][0], 2)])
+    result.append([int(X_test[0][i]), round(predic[i][0], 2)])
 
 print(result)
 
