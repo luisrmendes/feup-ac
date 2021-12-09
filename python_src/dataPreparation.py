@@ -6,8 +6,8 @@ from os.path import exists
 import utils.metrics as Metrics
 import utils.csv_loader as CsvLoader
 
-if not exists("dataMining.csv"):
-    print("dataMining.csv not found, generating . . .\n")
+if not exists("dataPrep.csv"):
+    print("dataPrep.csv not found, generating . . .\n")
     
     data = Bank_Data()
 
@@ -37,7 +37,7 @@ if not exists("dataMining.csv"):
 
     print("Done\n")
 else:
-    print("dataMining.csv exists, not generating\n")
+    print("dataPrep.csv exists, not generating\n")
 
 
 

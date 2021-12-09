@@ -1,4 +1,7 @@
 import csv
+import numpy as np
+
+from os import name
 from data.bank_data import Bank_Data
 from data.district import District
 from data.enum_types import Order
@@ -38,12 +41,21 @@ def populate_csv(data):
     last_transaction_date_per_account = []
     transactions_last_balance_per_account = []
     no_transactions_type_credit_per_account = []
+
     avg_amount_of_transaction_credit_per_account = []
+    median_amount_of_transaction_credit_per_account = []
     max_amount_of_transaction_credit_per_account = []
     min_amount_of_transaction_credit_per_account = []
+    variance_amount_of_transaction_credit_per_account = []
+
     avg_amount_of_transaction_withdrawal_per_account = []
+    median_amount_of_transaction_withdrawal_per_account = []
     max_amount_of_transaction_withdrawal_per_account = []
     min_amount_of_transaction_withdrawal_per_account = []
+    variance_amount_of_transaction_withdrawal_per_account = []
+
+    covariance_amount_of_transaction_credit_and_withdrawal_per_account = []
+
     no_k_na_of_transaction_per_account = []
     no_k_household_of_transaction_per_account = []
     no_k_interest_credited_of_transaction_per_account = []
@@ -93,21 +105,37 @@ def populate_csv(data):
         
         if (len(ammounts_credit) != 0):
             avg_amount_of_transaction_credit_per_account.append(statistics.mean(ammounts_credit))
+            median_amount_of_transaction_credit_per_account.append(statistics.median(ammounts_credit))
             max_amount_of_transaction_credit_per_account.append(max(ammounts_credit))
             min_amount_of_transaction_credit_per_account.append(min(ammounts_credit))
+            variance_amount_of_transaction_credit_per_account.append(statistics.pvariance(ammounts_credit))
         else:
             avg_amount_of_transaction_credit_per_account.append(0)
+            median_amount_of_transaction_credit_per_account.append(0)
             max_amount_of_transaction_credit_per_account.append(0)
             min_amount_of_transaction_credit_per_account.append(0)
+            variance_amount_of_transaction_credit_per_account.append(0)
         
         if (len(ammounts_withdrawal) != 0):
             avg_amount_of_transaction_withdrawal_per_account.append(statistics.mean(ammounts_withdrawal))
+            median_amount_of_transaction_withdrawal_per_account.append(statistics.median(ammounts_withdrawal))
             max_amount_of_transaction_withdrawal_per_account.append(max(ammounts_withdrawal))
             min_amount_of_transaction_withdrawal_per_account.append(min(ammounts_withdrawal))
+            variance_amount_of_transaction_withdrawal_per_account.append(statistics.pvariance(ammounts_withdrawal))
         else:
             avg_amount_of_transaction_withdrawal_per_account.append(0)
+            median_amount_of_transaction_withdrawal_per_account.append(0)
             max_amount_of_transaction_withdrawal_per_account.append(0)
             min_amount_of_transaction_withdrawal_per_account.append(0)
+            variance_amount_of_transaction_withdrawal_per_account.append(0)
+
+        # if (len(ammounts_credit) and len(ammounts_withdrawal)) != 0:
+        #     covariance_amount_of_transaction_credit_and_withdrawal_per_account.append(
+        #         np.cov(
+        #             np.array(ammounts_credit), 
+        #             np.array(ammounts_withdrawal)
+        #             )
+        #         )[0][1]
 
         no_k_na = 0
         no_k_household = 0
@@ -223,7 +251,7 @@ def populate_csv(data):
   
     print("Creating CSV . . .\n")
 
-    f = open('dataMining.csv', 'a')
+    f = open('dataPrep.csv', 'a')
     writer = csv.writer(f)
 
     for i in range(len(loans)):
@@ -236,20 +264,29 @@ def populate_csv(data):
         row.append(loan_payments[i])
         row.append(loan_status[i])
 
-        row.append(account_ids[i])
+        row.append(account_ids[i])  # ?
         row.append(account_dates[i].get_year())
-        row.append(account_frequency[i])
+        # row.append(account_frequency[i])
         
         row.append(transactions_number_per_account[i])
         row.append(last_transaction_date_per_account[i])
         row.append(transactions_last_balance_per_account[i])
         row.append(no_transactions_type_credit_per_account[i])
+
         row.append(avg_amount_of_transaction_credit_per_account[i])
+        row.append(median_amount_of_transaction_credit_per_account[i])
         row.append(max_amount_of_transaction_credit_per_account[i])
         row.append(min_amount_of_transaction_credit_per_account[i])
+        row.append(variance_amount_of_transaction_credit_per_account[i])
+
         row.append(avg_amount_of_transaction_withdrawal_per_account[i])
+        row.append(median_amount_of_transaction_withdrawal_per_account[i])
         row.append(max_amount_of_transaction_withdrawal_per_account[i])
         row.append(min_amount_of_transaction_withdrawal_per_account[i])
+        row.append(variance_amount_of_transaction_withdrawal_per_account[i])
+
+        # row.append(covariance_amount_of_transaction_credit_and_withdrawal_per_account[i])
+
         row.append(no_k_na_of_transaction_per_account[i])
         row.append(no_k_household_of_transaction_per_account[i])
         row.append(no_k_interest_credited_of_transaction_per_account[i])
@@ -258,8 +295,8 @@ def populate_csv(data):
         row.append(no_k_payment_for_statement_of_transaction_per_account[i])
         row.append(no_k_sanction_interest_if_negative_balance_of_transaction_per_account[i])
         
-        row.append(owner_district_name_per_account[i])
-        row.append(owner_region_per_account[i])
+        # row.append(owner_district_name_per_account[i])
+        # row.append(owner_region_per_account[i])
         row.append(owner_district_n_inhab_per_account[i])
         row.append(owner_district_n_inhab_per_account[i])
         row.append(owner_district_n_inhab_per_account[i])

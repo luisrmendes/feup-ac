@@ -1,5 +1,6 @@
 import enum
 
+
 class Gender(enum.Enum):
     Men = 1
     Women = 2
@@ -8,7 +9,8 @@ class Gender(enum.Enum):
         if self == Gender.Men:
             return "Men"
         else:
-            return "Women" 
+            return "Women"
+
 
 class Frequency(enum.Enum):
     After_Transaction = 1
@@ -23,6 +25,7 @@ class Frequency(enum.Enum):
         else:
             return "Monthly Issuance"
 
+
 class Ownership(enum.Enum):
     Owner = 1
     Disponent = 2
@@ -32,6 +35,7 @@ class Ownership(enum.Enum):
             return "Owner"
         else:
             return "Disponent"
+
 
 class CardType(enum.Enum):
     Classic = 1
@@ -46,6 +50,7 @@ class CardType(enum.Enum):
         else:
             return "Gold"
 
+
 class TransactionType(enum.Enum):
     Credit = 1
     Withdrawal = 2
@@ -59,12 +64,13 @@ class TransactionType(enum.Enum):
         else:
             return "Withdrawal in Cash"
 
+
 class Operation(enum.Enum):
     NA = 1
     CreditInCash = 2
     WithdrawalInCash = 3
     CreditCardWithdrawal = 4
-    RemittanceToAnotherBank = 5 
+    RemittanceToAnotherBank = 5
     CollectionFromAnotherBank = 6
 
     def to_str(self):
@@ -80,6 +86,7 @@ class Operation(enum.Enum):
             return "Remittance to Another Bank"
         else:
             return "Collection from Another Bank"
+
 
 class KSymbol(enum.Enum):
     NA = 1
@@ -106,7 +113,7 @@ class KSymbol(enum.Enum):
         elif self == KSymbol.SanctionInterestIfNegativeBalance:
             return "Sanction Interest if Negative Balance"
 
+
 class Order(enum.Enum):
     Growing = 1
     Decreasing = 2
-
