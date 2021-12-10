@@ -8,8 +8,6 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 import matplotlib.pyplot as plt
 import sklearn.tree as tree
-from sklearn.svm import SVC
-from sklearn.neighbors import KNeighborsClassifier
   
 
 # Function importing Dataset
@@ -130,17 +128,7 @@ def tarin_using_entropy(X_train, X_test, y_train):
     # Performing training
     clf_entropy.fit(X_train, y_train)
     return clf_entropy
-
-def train_using_svc(X_train, X_test, y_train):
   
-    # Creating the classifier object
-    #SVC_model = SVC()
-    KNN_model = KNeighborsClassifier(n_neighbors=5)
-    #SVC_model.fit(X_train, y_train)
-    KNN_model.fit(X_train, y_train)
-  
-    return KNN_model
-
 # Function to make predictions
 def prediction(X_test, clf_object):
   
@@ -168,46 +156,36 @@ def cal_accuracy(y_test, y_pred):
 data, test_data = importdata()
 
 
-X_train, y_train, X_test = getfinaldata(data, test_data)
+# X_train, y_train, X_test = getfinaldata(data, test_data)
 X, Y, X_train, X_test, y_train, y_test = splitdataset(data)
 
 clf_gini = train_using_gini(X_train, X_test, y_train)
 clf_entropy = tarin_using_entropy(X_train, X_test, y_train)
-svc = train_using_svc(X_train, X_test, y_train)
       
 # Operational Phase
 print("Results Using Gini Index:")
       
 # Prediction using gini
-#y_pred_gini = prediction(X_test, clf_gini)
-#cal_accuracy(y_test, y_pred_gini)
+y_pred_gini = prediction(X_test, clf_gini)
+cal_accuracy(y_test, y_pred_gini)
       
 print("Results Using Entropy:")
 # Prediction using entropy
-#y_pred_entropy = prediction(X_test, clf_entropy)
-#cal_accuracy(y_test, y_pred_entropy)
+y_pred_entropy = prediction(X_test, clf_entropy)
+cal_accuracy(y_test, y_pred_entropy)
 
-print("Results Using svc:")
-y_pred_svc = prediction(X_test, svc)
-cal_accuracy(y_test, y_pred_svc)
-
-"""
 predic = clf_entropy.predict_proba(X_test)
 
-result = []
-for i in range(len(X_test)):
-    result.append([int(X_test[0][i]), round(predic[i][0], 2)])
+# result = []
+# for i in range(len(X_test)):
+#     result.append([int(X_test[0][i]), round(predic[i][0], 2)])
 
-print(result)
+# print(result)
 
-f = open('result.csv', 'a')
-writer = csv.writer(f)
-writer.writerow(['Id', 'Predicted'])
-for i in range(len(predic)):
-    writer.writerow(result[i])
+# f = open('result.csv', 'a')
+# writer = csv.writer(f)
+# writer.writerow(['Id', 'Predicted'])
+# for i in range(len(predic)):
+#     writer.writerow(result[i])
 
 print(tree.export_text(clf_entropy))
-"""
-
-
-
