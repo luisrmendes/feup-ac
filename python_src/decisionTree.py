@@ -189,3 +189,6 @@ for i in range(len(predic)):
     writer.writerow(result[i])
 
 print(tree.export_text(clf_entropy))
+
+
+
