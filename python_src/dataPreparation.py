@@ -6,7 +6,7 @@ from os.path import exists
 import utils.metrics as Metrics
 import utils.csv_loader as CsvLoader
 
-if not exists("dataPrepTest.csv"):
+if not exists("dataPrep.csv"):
     print("dataPrep.csv not found, generating . . .\n")
     
     data = Bank_Data()
@@ -19,18 +19,18 @@ if not exists("dataPrepTest.csv"):
     data.add_accounts("data/ficheiros_competicao/account.csv")
     print("Loading dispositions . . .\n")
     data.add_dispositions("data/ficheiros_competicao/disp.csv")
-    print("Loading loans . . .\n")
-    data.add_loans("data/ficheiros_competicao/loan_test.csv")
-    print("Loading cards . . .\n")
-    data.add_cards("data/ficheiros_competicao/card_test.csv")
-    print("Loading transactions . . .\n")
-    data.add_transactions("data/ficheiros_competicao/trans_test.csv")
     # print("Loading loans . . .\n")
-    # data.add_loans("data/ficheiros_competicao/loan_train.csv")
+    # data.add_loans("data/ficheiros_competicao/loan_test.csv")
     # print("Loading cards . . .\n")
-    # data.add_cards("data/ficheiros_competicao/card_train.csv")
+    # data.add_cards("data/ficheiros_competicao/card_test.csv")
     # print("Loading transactions . . .\n")
-    # data.add_transactions("data/ficheiros_competicao/trans_train.csv")
+    # data.add_transactions("data/ficheiros_competicao/trans_test.csv")
+    print("Loading loans . . .\n")
+    data.add_loans("data/ficheiros_competicao/loan_train.csv")
+    print("Loading cards . . .\n")
+    data.add_cards("data/ficheiros_competicao/card_train.csv")
+    print("Loading transactions . . .\n")
+    data.add_transactions("data/ficheiros_competicao/trans_train.csv")
 
     # Load csv
     CsvLoader.populate_csv(data)
