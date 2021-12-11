@@ -6,18 +6,21 @@ features = pd.read_csv('temps.csv')
 print(features.head(5))
 
 # One-hot encode the data using pandas get_dummies
-features = pd.get_dummies(features)# Display the first 5 rows of the last 12 columns
-features.iloc[:,5:].head(5)
+features = pd.get_dummies(features)
+# Display the first 5 rows of the last 12 columns
+# features.iloc[:,5:].head(5)
 
 # Use numpy to convert to arrays
 import numpy as np
 
 # Labels are the values we want to predict
-labels = np.array(features['actual'])
+# labels = np.array(features['actual'])
+labels = np.array(features.iloc[:,6])
+
 
 # Remove the labels from the features
 # axis 1 refers to the columns
-features= features.drop('actual', axis = 1)
+features = features.drop(features.columns[6], axis = 1)
 
 # Saving feature names for later use
 feature_list = list(features.columns)
@@ -29,14 +32,16 @@ features = np.array(features)
 from sklearn.model_selection import train_test_split
 
 # Split the data into training and testing sets
-train_features, test_features, train_labels, test_labels = train_test_split(features, labels, test_size = 0.25, random_state = 42)
+train_features, test_features, train_labels, test_labels = train_test_split(
+    features, labels, test_size = 0.20, random_state = 100
+)
 
 # The baseline predictions are the historical averages
-baseline_preds = test_features[:, feature_list.index('average')]
+# baseline_preds = test_features[:, feature_list.index('average')]
 
 # Baseline errors, and display average baseline error
-baseline_errors = abs(baseline_preds - test_labels)
-print('Average baseline error: ', round(np.mean(baseline_errors), 2))
+# baseline_errors = abs(baseline_preds - test_labels)
+# print('Average baseline error: ', round(np.mean(baseline_errors), 2))
 
 # Import the model we are using
 from sklearn.ensemble import RandomForestRegressor

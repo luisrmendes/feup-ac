@@ -167,7 +167,6 @@ def cal_accuracy(y_test, y_pred):
 # Building Phase
 data, test_data = importdata()
 
-
 X_train, y_train, X_test = getfinaldata(data, test_data)
 X, Y, X_train, X_test, y_train, y_test = splitdataset(data)
 
