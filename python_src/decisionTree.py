@@ -19,6 +19,7 @@ def importdata():
     test_data = pd.read_csv(
         'csv_files/dataTest.csv',
         sep= ',', header = None)
+
       
     # Printing the dataswet shape
     print ("Dataset Length: ", len(train_data))
@@ -174,18 +175,27 @@ print("Results Using Entropy:")
 y_pred_entropy = prediction(X_test, clf_entropy)
 cal_accuracy(y_test, y_pred_entropy)
 
+print(y_test)
+print(y_pred_entropy)
+
 predic = clf_entropy.predict_proba(X_test)
 
-# result = []
-# for i in range(len(X_test)):
-#     result.append([int(X_test[0][i]), round(predic[i][0], 2)])
+from sklearn.metrics import roc_curve, auc, roc_auc_score
 
-# print(result)
+false_positive_rate, true_positive_rate, thresholds = roc_curve(y_test, y_pred_entropy)
+print(auc(false_positive_rate, true_positive_rate))
+print(roc_auc_score(y_test, y_pred_entropy))
 
-# f = open('result.csv', 'a')
-# writer = csv.writer(f)
-# writer.writerow(['Id', 'Predicted'])
-# for i in range(len(predic)):
-#     writer.writerow(result[i])
+result = []
+for i in range(len(X_test)):
+    result.append([int(X_test[0][i]), round(predic[i][0], 2)])
+
+print(result)
+
+f = open('result.csv', 'a')
+writer = csv.writer(f)
+writer.writerow(['Id', 'Predicted'])
+for i in range(len(predic)):
+    writer.writerow(result[i])
 
 print(tree.export_text(clf_entropy))
