@@ -3,7 +3,7 @@ import pandas as pd
 
 # Read in data and display first 5 rows
 features = pd.read_csv('csv_files/dataTrain.csv')
-print(features.head(5))
+# print(features.head(5))
 
 # One-hot encode the data using pandas get_dummies
 features = pd.get_dummies(features)
@@ -16,13 +16,13 @@ import numpy as np
 # Labels are the values we want to predict
 # labels = np.array(features['actual'])
 labels = np.array(features.iloc[:,5])
-print(labels)
+# print(labels)
 
 
 # Remove the labels from the features
 # axis 1 refers to the columns
 features = features.drop(features.columns[5], axis = 1)
-print(features)
+# print(features)
 
 # Saving feature names for later use
 feature_list = list(features.columns)
@@ -35,7 +35,7 @@ from sklearn.model_selection import train_test_split
 
 # Split the data into training and testing sets
 train_features, test_features, train_labels, test_labels = train_test_split(
-    features, labels, test_size = 0.20, random_state = 1
+    features, labels, test_size = 0.20
 )
 
 # The baseline predictions are the historical averages
