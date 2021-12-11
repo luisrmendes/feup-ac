@@ -13,11 +13,11 @@ import sklearn.tree as tree
 # Function importing Dataset
 def importdata():
     train_data = pd.read_csv(
-        'dataPrep.csv',
+        'csv_files/dataTrain.csv',
         sep= ',', header = None)
 
     test_data = pd.read_csv(
-        'dataPrepTest.csv',
+        'csv_files/dataTest.csv',
         sep= ',', header = None)
       
     # Printing the dataswet shape

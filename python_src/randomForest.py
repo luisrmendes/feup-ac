@@ -2,7 +2,7 @@
 import pandas as pd
 
 # Read in data and display first 5 rows
-features = pd.read_csv('dataPrep.csv')
+features = pd.read_csv('csv_files/dataTrain.csv')
 print(features.head(5))
 
 # One-hot encode the data using pandas get_dummies
