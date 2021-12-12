@@ -10,6 +10,7 @@ import numpy as np
 import sys
 import csv
 import os
+from os.path import exists
 
 
 to_csv = False
@@ -73,9 +74,11 @@ if not to_csv:
 
 # Import the model we are using
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
 
 # Instantiate model with 1000 decision trees
-rf = RandomForestRegressor(n_estimators = 1000, random_state = 42)
+rf = RandomForestRegressor(n_estimators = 2000, random_state = 42, min_samples_leaf = 2)
+# rf = RandomForestClassifier(n_estimators = 1000, random_state = 42)
 
 # Train the model on training data
 if to_csv:
@@ -106,7 +109,7 @@ if not to_csv:
         else:
             predictions[i] = 1
 
-    print("Confusion Matrix: ",
+    print("Confusion Matrix:\n",
         confusion_matrix(test_labels, predictions))
         
     print ("Accuracy : ",
@@ -132,11 +135,13 @@ else:
         pred += 1
         pred /= 2
         pred = 1 - pred
-        pred = round(pred, 2)
+        pred = round(pred, 5)
         result.append([int(test_features[i][0]), pred])
 
-    print("Removing predictions.csv . . .\n")
-    os.remove("predictions.csv") 
+    if exists("predictions.csv"):
+        print("Removing predictions.csv . . .\n")
+        os.remove("predictions.csv") 
+
     print("Generating predictions.csv . . .\n")
     f = open('predictions.csv', 'a')
     writer = csv.writer(f)

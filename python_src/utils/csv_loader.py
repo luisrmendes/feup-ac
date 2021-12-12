@@ -41,6 +41,7 @@ def populate_csv(data, filename):
     last_transaction_date_per_account = []
     transactions_last_balance_per_account = []
     no_transactions_type_credit_per_account = []
+    no_transactions_type_withdrawal_per_account = []
 
     avg_amount_of_transaction_credit_per_account = []
     median_amount_of_transaction_credit_per_account = []
@@ -102,6 +103,7 @@ def populate_csv(data, filename):
                 ammounts_withdrawal.append(transaction.get_amount())
 
         no_transactions_type_credit_per_account.append(len(ammounts_credit))
+        no_transactions_type_withdrawal_per_account.append(len(ammounts_withdrawal))
         
         if (len(ammounts_credit) != 0):
             avg_amount_of_transaction_credit_per_account.append(statistics.mean(ammounts_credit))
@@ -233,6 +235,11 @@ def populate_csv(data, filename):
         # no_of_commited_crimes_95
         # no_of_commited_crimes_96
 
+        all_districts = data.get_districts()
+
+       
+
+
         owner_district_name_per_account.append(demographics[0].get_name())
         owner_region_per_account.append(demographics[0].get_region())
         owner_district_n_inhab_per_account.append(demographics[0].get_n_inhab())
@@ -264,14 +271,15 @@ def populate_csv(data, filename):
         row.append(loan_payments[i])
         row.append(loan_status[i])
 
-        row.append(account_ids[i])  # ?
-        row.append(account_dates[i].get_year())
-        # row.append(account_frequency[i])
+        # row.append(account_ids[i])  # ?
+        row.append(account_dates[i].get_yymmdd())
+        row.append(account_frequency[i].value)
         
         row.append(transactions_number_per_account[i])
         row.append(last_transaction_date_per_account[i])
         row.append(transactions_last_balance_per_account[i])
         row.append(no_transactions_type_credit_per_account[i])
+        row.append(no_transactions_type_withdrawal_per_account[i])
 
         row.append(avg_amount_of_transaction_credit_per_account[i])
         row.append(median_amount_of_transaction_credit_per_account[i])

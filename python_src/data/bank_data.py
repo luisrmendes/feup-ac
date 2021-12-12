@@ -207,6 +207,8 @@ class Bank_Data:
             trans.add_account(self.get_by_id(self.accounts, int(transaction[1])))
             self.transactions.append(trans)
            
+    def get_districts(self):
+        return self.districts
 
     def get_by_id(self,list,id):
         if id < len(list):

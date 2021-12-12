@@ -4,7 +4,6 @@ from data.enum_types import Order
 from os.path import exists
 import os
 
-import python_src.getMetrics as Metrics
 import utils.csv_loader as CsvLoader
 import sys
 
@@ -61,28 +60,30 @@ def load_train_data():
 
         print("\n")
             
-        data = Bank_Data()
+    data = Bank_Data()
 
-        print("Loading districts . . .\n")
-        data.add_districts("data/ficheiros_competicao/district.csv")
-        print("Loading clients . . .\n")
-        data.add_clients("data/ficheiros_competicao/client.csv")
-        print("Loading accounts . . .\n")
-        data.add_accounts("data/ficheiros_competicao/account.csv")
-        print("Loading dispositions . . .\n")
-        data.add_dispositions("data/ficheiros_competicao/disp.csv")
+    print("Loading districts . . .\n")
+    data.add_districts("data/ficheiros_competicao/district.csv")
+    print(data.get_districts()[68].get_unemploymant_95())
+    print(data.get_districts()[68].get_n_crimes_95())
+    print("Loading clients . . .\n")
+    data.add_clients("data/ficheiros_competicao/client.csv")
+    print("Loading accounts . . .\n")
+    data.add_accounts("data/ficheiros_competicao/account.csv")
+    print("Loading dispositions . . .\n")
+    data.add_dispositions("data/ficheiros_competicao/disp.csv")
 
-        print("Loading train loans . . .\n")
-        data.add_loans("data/ficheiros_competicao/loan_train.csv")
-        print("Loading train cards . . .\n")
-        data.add_cards("data/ficheiros_competicao/card_train.csv")
-        print("Loading train transactions . . .\n")
-        data.add_transactions("data/ficheiros_competicao/trans_train.csv")
+    print("Loading train loans . . .\n")
+    data.add_loans("data/ficheiros_competicao/loan_train.csv")
+    print("Loading train cards . . .\n")
+    data.add_cards("data/ficheiros_competicao/card_train.csv")
+    print("Loading train transactions . . .\n")
+    data.add_transactions("data/ficheiros_competicao/trans_train.csv")
         
-        # Load csv
-        CsvLoader.populate_csv(data, filename)
+    # Load csv
+    CsvLoader.populate_csv(data, filename)
 
-        print("Done\n")
+    print("Done\n")
 
 if len(sys.argv) != 2:
     print("Usage: python dataPreparation.py <train | test>")
