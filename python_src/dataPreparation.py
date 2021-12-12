@@ -4,7 +4,7 @@ from data.enum_types import Order
 from os.path import exists
 import os
 
-import utils.metrics as Metrics
+import python_src.getMetrics as Metrics
 import utils.csv_loader as CsvLoader
 import sys
 

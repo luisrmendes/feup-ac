@@ -5,6 +5,7 @@ from data.loan import Loan
 from data.transaction import Transaction
 from data.enum_types import TransactionType
 import statistics
+from data.bank_data import Bank_Data
 
 
 def getAverage(list):
@@ -21,6 +22,8 @@ def valuelabel(subPlot, weight, height):
                  bbox=dict(facecolor='cyan', alpha=0.8))
 
 def display_client_metrics(data):
+    print("Generating Client Metrics . . .\n")
+
     list_clients = data.clients
 
     fig, axs = plt.subplots(2)
@@ -68,6 +71,8 @@ def display_client_metrics(data):
     plt.close()
 
 def display_loan_metrics(data):
+    print("Generating Loan Metrics . . .\n")
+
     list_loans = data.loans
     fig, axs = plt.subplots(3, 3)
     fig.suptitle("Loan Metrics")
@@ -195,17 +200,12 @@ def display_loan_metrics(data):
     count_withdrawal = 0
     count_withdrawal_in_cash = 0
     for n in list_of_transactions:
-        print(n)
         if n == TransactionType.Credit:
             count_credit += 1
         elif n == TransactionType.Withdrawal:
             count_withdrawal += 1
         elif n == TransactionType.WithdrawalInCash:
             count_withdrawal_in_cash += 1
-
-    print(count_credit)
-    print(count_withdrawal)
-    print(count_withdrawal_in_cash)
 
     left_coordinates7 = [1, 2, 3]
     heights7 = [count_credit, count_withdrawal, count_withdrawal_in_cash]
@@ -216,7 +216,31 @@ def display_loan_metrics(data):
         width=0.6, color=['red', 'black'])
     valuelabel(axs[2, 0], left_coordinates7, heights7)
 
-    # print(list_of_transactions)
-
     plt.show()
     plt.close()
+
+def load_data():
+    data = Bank_Data()
+    print("Loading districts . . .\n")
+    data.add_districts("data/ficheiros_competicao/district.csv")
+    print("Loading clients . . .\n")
+    data.add_clients("data/ficheiros_competicao/client.csv")
+    print("Loading accounts . . .\n")
+    data.add_accounts("data/ficheiros_competicao/account.csv")
+    print("Loading dispositions . . .\n")
+    data.add_dispositions("data/ficheiros_competicao/disp.csv")
+
+    print("Loading train loans . . .\n")
+    data.add_loans("data/ficheiros_competicao/loan_train.csv")
+    print("Loading train cards . . .\n")
+    data.add_cards("data/ficheiros_competicao/card_train.csv")
+    print("Loading train transactions . . .\n")
+    data.add_transactions("data/ficheiros_competicao/trans_train.csv")
+
+    return data
+
+
+data = load_data()
+
+display_client_metrics(data)
+display_loan_metrics(data)

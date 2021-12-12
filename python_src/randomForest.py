@@ -135,7 +135,9 @@ else:
         pred = round(pred, 2)
         result.append([int(test_features[i][0]), pred])
 
+    print("Removing predictions.csv . . .\n")
     os.remove("predictions.csv") 
+    print("Generating predictions.csv . . .\n")
     f = open('predictions.csv', 'a')
     writer = csv.writer(f)
     writer.writerow(['Id', 'Predicted'])
