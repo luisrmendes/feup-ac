@@ -45,8 +45,7 @@ def load_test_data():
         CsvLoader.populate_csv(data, filename)
 
         print("Done\n")
-   
-
+ 
 def load_train_data():
     filename = "csv_files/dataTrain.csv"
 
@@ -84,7 +83,6 @@ def load_train_data():
         CsvLoader.populate_csv(data, filename)
 
         print("Done\n")
-
 
 if len(sys.argv) != 2:
     print("Usage: python dataPreparation.py <train | test>")
