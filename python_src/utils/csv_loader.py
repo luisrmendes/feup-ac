@@ -184,9 +184,6 @@ def populate_csv(data, filename):
     owner_district_name_per_account = []
     owner_region_per_account = []
     owner_district_n_inhab_per_account = []
-    owner_district_n_inhab_per_account = []
-    owner_district_n_inhab_per_account = []
-    owner_district_n_inhab_per_account = []
     owner_district_n_mun_inhab_0_499_per_account = []
     owner_district_n_mun_inhab_500_1999_per_account = []
     owner_district_n_mun_inhab_2000_9999_per_account = []
@@ -236,9 +233,6 @@ def populate_csv(data, filename):
         # no_of_commited_crimes_96
 
         all_districts = data.get_districts()
-
-       
-
 
         owner_district_name_per_account.append(demographics[0].get_name())
         owner_region_per_account.append(demographics[0].get_region())
