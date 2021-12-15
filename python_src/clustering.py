@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
 from sklearn import cluster
-from sklearn.cluster import KMeans, SpectralClustering, Birch, AgglomerativeClustering
+from sklearn.cluster import KMeans, SpectralClustering, Birch, AgglomerativeClustering, DBSCAN
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
+from sklearn.metrics import silhouette_score
 
 #KMeans----------------------------------------------------
 
@@ -67,6 +68,7 @@ for i in range(44):
     Data[[i]] = scaler.transform(Data[[i]])
 
 
+#tried diferent n_init and max_iter  -- same result
 
 k_rng = range(1, 10)
 sse = []
@@ -80,21 +82,31 @@ plt.show()
 
 #n_clusters=2----------------------------------------------------------------------------
 #KMeans----------------------------------------------------
+print('KMeans with 2 clusters')
 kmeans_results = KMeans(n_clusters=2).fit_predict(Data)
 kmeans = KMeans(n_clusters=2).fit(Data)
 centroids = kmeans.cluster_centers_
 print(kmeans_results)
+score = silhouette_score(Data, kmeans_results)
+print("Silhouette score is {})".format(score))
 
 #Birch-----------------------------------------------------
+print('\n\nBirch with 2 clusters')
 birch_results = Birch(n_clusters=2).fit_predict(Data)
 birch = Birch(n_clusters=2).fit(Data)
 print(birch_results)
+score = silhouette_score(Data, birch_results)
+print("Silhouette score is {})".format(score))
 
 #AgglomerativeClustering-----------------------------------
+print('\n\nAgglomerativeClustering with 2 clusters')
 agg_results = AgglomerativeClustering(n_clusters=2).fit_predict(Data)
 agglomerativeClustering = AgglomerativeClustering(n_clusters=2).fit(Data)
 print(agg_results)
+score = silhouette_score(Data, agg_results)
+print("Silhouette score is {})".format(score))
 
+print('\n\nPercentage of positive status per cluster (2 clusters)')
 cluster_success_rate = [] 
 for i in range(2):
     success = 0
@@ -110,21 +122,32 @@ print(cluster_success_rate)
 
 #n_clusters=3----------------------------------------------------------------------------
 #KMeans----------------------------------------------------
+print('\n\nKMeans with 3 clusters')
 kmeans_results_3c = KMeans(n_clusters=3).fit_predict(Data)
 kmeans_3c = KMeans(n_clusters=3).fit(Data)
-centroids = kmeans.cluster_centers_
+centroids = kmeans_3c.cluster_centers_
 print(kmeans_results_3c)
+score = silhouette_score(Data, kmeans_results_3c)
+print("Silhouette score is {})".format(score))
 
 #Birch-----------------------------------------------------
+print('\n\nBirch with 3 clusters')
 birch_results_3c = Birch(n_clusters=3).fit_predict(Data)
 birch_3c = Birch(n_clusters=3).fit(Data)
 print(birch_results_3c)
+score = silhouette_score(Data, birch_results_3c)
+print("Silhouette score is {})".format(score))
 
 #AgglomerativeClustering-----------------------------------
+print('\n\nAgglomerativeClustering with 3 clusters')
 agg_results_3c = AgglomerativeClustering(n_clusters=3).fit_predict(Data)
 agglomerativeClustering_3c = AgglomerativeClustering(n_clusters=3).fit(Data)
 print(agg_results_3c)
+score = silhouette_score(Data, agg_results_3c)
+print("Silhouette score is {})".format(score))
 
+
+print('\n\nPercentage of positive status per cluster (3 clusters)')
 cluster_success_rate = [] 
 for i in range(3):
     success = 0
@@ -138,10 +161,18 @@ for i in range(3):
     cluster_success_rate.append(success/total)
 print(cluster_success_rate)
 
+#Birch-----------------------------------------------------
+print('\n\nBirch with n clusters')
+birch_results_n = Birch(n_clusters=None).fit_predict(Data)
+birch_n = Birch(n_clusters=None).fit(Data)
+print(birch_results_n)
+score = silhouette_score(Data, birch_results_n)
+print("Silhouette score is {})".format(score))
+
 #View graphs-----------------------------------------------------------------------
 '''
 for i in range(44):
-    plt.scatter(Data[i], np.zeros_like(Data[i]) + 0, c= birch_results_3c.astype(float), s=50, alpha=0.5)
+    plt.scatter(Data[i], np.zeros_like(Data[i]) + 0, c= dbscan_results.astype(float), s=50, alpha=0.5)
     fig = plt.gcf()
     fig.canvas.manager.set_window_title(labels[i+1])
     plt.show()
