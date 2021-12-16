@@ -16,11 +16,11 @@ from sklearn.neighbors import KNeighborsClassifier
 def importdata():
     train_data = pd.read_csv(
         'csv_files/dataTrain.csv',
-        sep= ',', header = None)
+        sep= ',')
 
     test_data = pd.read_csv(
         'csv_files/dataTest.csv',
-        sep= ',', header = None)
+        sep= ',')
       
     # Printing the dataswet shape
     print ("Dataset Length: ", len(train_data))

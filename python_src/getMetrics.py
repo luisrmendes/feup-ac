@@ -7,6 +7,8 @@ from data.enum_types import TransactionType
 import statistics
 from data.bank_data import Bank_Data
 import numpy as np 
+import csv
+
 
 
 def getAverage(list):
@@ -27,7 +29,7 @@ def display_client_metrics(data):
 
     list_clients = data.clients
 
-    fig, axs = plt.subplots(2,3)
+    fig, axs = plt.subplots(3,3)
 
     fig.suptitle("Client Metrics")
 
@@ -42,11 +44,14 @@ def display_client_metrics(data):
     left_coordinates1 = [1, 2, 3, 4]
     heights1 = [age_avg, age_moda, age_max, age_min]
     bar_labels1 = ['Media', 'Moda', 'Max', 'Min']
-
+    
     axs[0, 0].set_title("Client Age")
     axs[0, 0].bar(left_coordinates1, heights1, tick_label=bar_labels1,
-        width=0.6, color=['green', 'purple'])
+        width=0.6, color=['dodgerblue', 'yellowgreen'])
     valuelabel(axs[0, 0], left_coordinates1, heights1)
+
+    axs[0, 1].set_title('Client Age Box Plot')
+    axs[0, 1].boxplot(list_of_ages)
 
     # Metricas de Gender
     list_of_genders = data.get_all(list_clients, Client.get_gender)
@@ -62,18 +67,19 @@ def display_client_metrics(data):
     heights2 = [count_men, count_women]
     bar_labels2 = ['Men', 'Women']
     
-    axs[0, 1].set_title("Client Gender")
-    axs[0, 1].bar(left_coordinates2, heights2, tick_label=bar_labels2,
-        width=0.6, color=['green', 'purple'])
+    axs[0, 2].set_title("Client Gender")
+    axs[0, 2].bar(left_coordinates2, heights2, tick_label=bar_labels2,
+        width=0.6, color=['dodgerblue', 'yellowgreen'])
 
-    valuelabel(axs[0, 1], left_coordinates2, heights2)
+    valuelabel(axs[0, 2], left_coordinates2, heights2)
+
+    # Dados dos clientes com loans (owners)
+    with open('csv_files/dataTrain.csv', newline='') as csvfile:
+        loans = list(csv.reader(csvfile, delimiter=',', ))
+
+    print(loans)
     
-    axs[1, 0].set_title('basic plot')
-    axs[1, 0].boxplot(list_of_ages)
-
-    axs[1, 0].set_title('basic plot')
-    axs[1, 0].boxplot(list_of_ages, 1)
-
+    
     plt.show()
     plt.close()
 
@@ -315,6 +321,10 @@ def display_more_loan_metrics(data):
     plt.title("Status per District")
     plt.legend()
     plt.show()
+    
+    
+
+
     return
 
     left_coordinates2 = [1, 2, 3, 4]
@@ -462,6 +472,6 @@ def load_data():
 
 data = load_data()
 
-# display_client_metrics(data)
+display_client_metrics(data)
 # display_loan_metrics(data)
-display_more_loan_metrics(data)
+# display_more_loan_metrics(data)

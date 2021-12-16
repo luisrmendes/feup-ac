@@ -30,9 +30,9 @@ else:
 import pandas as pd
 
 # Read in data and display first 5 rows
-train_features = pd.read_csv('csv_files/dataTrain.csv', header = None)
+train_features = pd.read_csv('csv_files/dataTrain.csv')
 if to_csv: 
-    test_features = pd.read_csv('csv_files/dataTest.csv', header = None)
+    test_features = pd.read_csv('csv_files/dataTest.csv')
 
 # One-hot encode the data using pandas get_dummies
 train_features = pd.get_dummies(train_features)
