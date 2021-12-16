@@ -267,9 +267,6 @@ def display_more_loan_metrics(data):
             new_pos = districts_success[id][0]
         new_total = districts_success[id][1] + 1
         districts_success[id] = [new_pos, new_total]
-
-    print (districts_success)
-
     
     districts_names = []
     districts_succ = []

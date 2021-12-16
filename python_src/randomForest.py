@@ -11,6 +11,7 @@ import sys
 import csv
 import os
 from os.path import exists
+import matplotlib.pyplot as plt
 
 
 to_csv = False
@@ -60,10 +61,10 @@ if to_csv: test_features = np.array(test_features)
 from sklearn.model_selection import train_test_split
 
 # Split the data into training and testing sets
-if not to_csv:
-    train_features, test_features, train_labels, test_labels = train_test_split(
-        train_features, labels, test_size = 0.20
-    )
+#if not to_csv:
+#    train_features, test_features, train_labels, test_labels = train_test_split(
+#        train_features, labels, test_size = 0.20
+#    )
 
 # The baseline predictions are the historical averages
 # baseline_preds = test_features[:, feature_list.index('average')]
@@ -77,56 +78,81 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import RandomForestClassifier
 
 # Instantiate model with 1000 decision trees
-rf = RandomForestRegressor(n_estimators = 2000, random_state = 42, min_samples_leaf = 2)
+rf = RandomForestRegressor(n_estimators = 200, random_state = 42, min_samples_leaf = 1000)
 # rf = RandomForestClassifier(n_estimators = 1000, random_state = 42)
 
 # Train the model on training data
+predictions = 0
 if to_csv:
     rf.fit(train_features, labels)
-else:
-    rf.fit(train_features, train_labels)
+    predictions = rf.predict(test_features)
+#else:
+#    rf.fit(train_features, train_labels)
 
-predictions = rf.predict(test_features)
+#predictions = rf.predict(test_features)
 
 if not to_csv:
-    # Use the forest's predict method on the test data
+    acc = []
+    mape_acc = []
+    auc_score = []
+    for i in range(20):
+        training_features, test_features, train_labels, test_labels = train_test_split(
+            train_features, labels, test_size = 0.20
+        )
+        rf.fit(training_features, train_labels)
 
-    # Calculate the absolute errors
-    errors = abs(predictions - test_labels)
+        predictions = rf.predict(test_features)
 
-    # Print out the mean absolute error (mae)
-    print('Mean Absolute Error:', round(np.mean(errors), 2), 'degrees.')
+        # Use the forest's predict method on the test data
 
-    # Calculate mean absolute percentage error (MAPE)
-    mape = 100 * (errors / test_labels)
+        # Calculate the absolute errors
+        errors = abs(predictions - test_labels)
 
-    # Calculate and display accuracy
-    accuracy = 100 - np.mean(errors * 100)
+        # Print out the mean absolute error (mae)
+        #print('Mean Absolute Error:', round(np.mean(errors), 2), 'degrees.')
 
-    for i in range(len(predictions)):
-        if predictions[i] < 0:
-            predictions[i] = -1
-        else:
-            predictions[i] = 1
+        # Calculate mean absolute percentage error (MAPE)
+        mape = 100 * (errors / test_labels)
 
-    print("Confusion Matrix:\n",
-        confusion_matrix(test_labels, predictions))
-        
-    print ("Accuracy : ",
-        accuracy_score(test_labels, predictions)*100)
-        
-    print("Report : ",
-        classification_report(test_labels, predictions))
+        # Calculate and display accuracy
+        accuracy = 100 - np.mean(errors * 100)
 
-    from sklearn.metrics import roc_curve, auc, roc_auc_score
+        for i in range(len(predictions)):
+            if predictions[i] < 0:
+                predictions[i] = -1
+            else:
+                predictions[i] = 1
 
-    false_positive_rate, true_positive_rate, thresholds = roc_curve(test_labels, predictions)
-    print(auc(false_positive_rate, true_positive_rate))
-    print(roc_auc_score(test_labels, predictions))
+        #print("Confusion Matrix:\n",
+        #    confusion_matrix(test_labels, predictions))
+            
+        #print ("Accuracy : ",
+        #    accuracy_score(test_labels, predictions)*100)
 
-    # Calculate and display accuracy
-    accuracy = 100 - np.mean(mape)
-    print('Accuracy:', round(accuracy, 2), '%.')
+        acc.append(accuracy_score(test_labels, predictions))
+            
+        #print("Report : ",
+        #    classification_report(test_labels, predictions))
+
+        from sklearn.metrics import roc_curve, auc, roc_auc_score
+
+        false_positive_rate, true_positive_rate, thresholds = roc_curve(test_labels, predictions)
+        auc_score.append(auc(false_positive_rate, true_positive_rate))
+
+        #plt.plot(false_positive_rate, true_positive_rate, 'b', label = 'AUC = %0.2f' % auc(false_positive_rate, true_positive_rate))
+        #plt.plot([0, 1], [0, 1],'r--')
+        #plt.xlim([0, 1])
+        #plt.ylim([0, 1])
+        #plt.show()
+        # Calculate and display accuracy
+
+        accuracy = 100 - abs(np.mean(mape))
+        mape_acc.append(accuracy)
+        #print('Accuracy:', round(accuracy, 2), '%.')
+
+    print("Accuracy", sum(acc)/len(acc))
+    print("Mape Accuracy", sum(mape_acc)/len(mape_acc))
+    print("Auc", sum(auc_score)/len(auc_score))
 
 else:
     result = []

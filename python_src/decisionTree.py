@@ -186,16 +186,22 @@ false_positive_rate, true_positive_rate, thresholds = roc_curve(y_test, y_pred_e
 print(auc(false_positive_rate, true_positive_rate))
 print(roc_auc_score(y_test, y_pred_entropy))
 
-result = []
-for i in range(len(X_test)):
-    result.append([int(X_test[0][i]), round(predic[i][0], 2)])
+plt.plot(false_positive_rate, true_positive_rate, 'b', label = 'AUC = %0.2f' % auc(false_positive_rate, true_positive_rate))
+plt.plot([0, 1], [0, 1],'r--')
+plt.xlim([0, 1])
+plt.ylim([0, 1])
+plt.show()
 
-print(result)
+#result = []
+#for i in range(len(X_test)):
+#    result.append([int(X_test[0][i]), round(predic[i][0], 2)])
 
-f = open('result.csv', 'a')
-writer = csv.writer(f)
-writer.writerow(['Id', 'Predicted'])
-for i in range(len(predic)):
-    writer.writerow(result[i])
+#print(result)
+
+#f = open('result.csv', 'a')
+#writer = csv.writer(f)
+#writer.writerow(['Id', 'Predicted'])
+#for i in range(len(predic)):
+#    writer.writerow(result[i])
 
 print(tree.export_text(clf_entropy))

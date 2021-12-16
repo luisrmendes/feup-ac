@@ -190,6 +190,18 @@ print("Results Using svc:")
 y_pred_svc = prediction(X_test, svc)
 cal_accuracy(y_test, y_pred_svc)
 
+from sklearn.metrics import roc_curve, auc, roc_auc_score
+
+false_positive_rate, true_positive_rate, thresholds = roc_curve(y_test, y_pred_svc)
+print(auc(false_positive_rate, true_positive_rate))
+print(roc_auc_score(y_test, y_pred_svc))
+
+plt.plot(false_positive_rate, true_positive_rate, 'b', label = 'AUC = %0.2f' % auc(false_positive_rate, true_positive_rate))
+plt.plot([0, 1], [0, 1],'r--')
+plt.xlim([0, 1])
+plt.ylim([0, 1])
+plt.show()
+
 """
 predic = clf_entropy.predict_proba(X_test)
 
