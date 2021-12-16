@@ -52,6 +52,11 @@ labels = np.array(train_features.iloc[:,5])
 train_features = train_features.drop(train_features.columns[5], axis = 1)
 if to_csv: test_features = test_features.drop(test_features.columns[5], axis = 1)
 
+print(train_features.columns[42])
+
+train_features = train_features.drop(train_features.columns[42], axis = 1)
+
+
 # Convert to numpy array
 train_features = np.array(train_features)
 if to_csv: test_features = np.array(test_features)
@@ -78,7 +83,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import RandomForestClassifier
 
 # Instantiate model with 1000 decision trees
-rf = RandomForestRegressor(n_estimators = 200, random_state = 42, min_samples_leaf = 1000)
+rf = RandomForestRegressor(n_estimators = 200, random_state = 42, min_samples_leaf = 2)
 # rf = RandomForestClassifier(n_estimators = 1000, random_state = 42)
 
 # Train the model on training data
@@ -95,7 +100,7 @@ if not to_csv:
     acc = []
     mape_acc = []
     auc_score = []
-    for i in range(20):
+    for i in range(100):
         training_features, test_features, train_labels, test_labels = train_test_split(
             train_features, labels, test_size = 0.20
         )
