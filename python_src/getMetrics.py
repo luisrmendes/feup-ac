@@ -7,6 +7,10 @@ from data.enum_types import TransactionType
 import statistics
 from data.bank_data import Bank_Data
 import numpy as np 
+import csv
+import pandas as pd
+
+
 
 
 def getAverage(list):
@@ -27,26 +31,29 @@ def display_client_metrics(data):
 
     list_clients = data.clients
 
-    fig, axs = plt.subplots(2,3)
+    fig, axs = plt.subplots(4,3)
 
     fig.suptitle("Client Metrics")
 
     # Metricas de idades
-    list_of_ages = data.get_all(list_clients, Client.get_birth_date_year)
+    list_of_birth_date_year = data.get_all(list_clients, Client.get_birth_date_year)
 
-    age_avg = round(getAverage(list_of_ages), 2)
-    age_moda = statistics.mode(list_of_ages)
-    age_min = min(list_of_ages)
-    age_max = max(list_of_ages)
+    age_avg = round(getAverage(list_of_birth_date_year), 2)
+    age_moda = statistics.mode(list_of_birth_date_year)
+    age_min = min(list_of_birth_date_year)
+    age_max = max(list_of_birth_date_year)
 
     left_coordinates1 = [1, 2, 3, 4]
     heights1 = [age_avg, age_moda, age_max, age_min]
     bar_labels1 = ['Media', 'Moda', 'Max', 'Min']
-
+    
     axs[0, 0].set_title("Client Age")
     axs[0, 0].bar(left_coordinates1, heights1, tick_label=bar_labels1,
-        width=0.6, color=['green', 'purple'])
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
     valuelabel(axs[0, 0], left_coordinates1, heights1)
+
+    axs[0, 1].set_title('Client Birth Date Box Plot')
+    axs[0, 1].boxplot(list_of_birth_date_year)
 
     # Metricas de Gender
     list_of_genders = data.get_all(list_clients, Client.get_gender)
@@ -61,18 +68,147 @@ def display_client_metrics(data):
     left_coordinates2 = [1, 2]
     heights2 = [count_men, count_women]
     bar_labels2 = ['Men', 'Women']
-    
-    axs[0, 1].set_title("Client Gender")
-    axs[0, 1].bar(left_coordinates2, heights2, tick_label=bar_labels2,
-        width=0.6, color=['green', 'purple'])
+    axs[0, 2].set_title("Client Gender")
+    axs[0, 2].bar(left_coordinates2, heights2, tick_label=bar_labels2,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[0, 2], left_coordinates2, heights2)
 
-    valuelabel(axs[0, 1], left_coordinates2, heights2)
-    
-    axs[1, 0].set_title('basic plot')
-    axs[1, 0].boxplot(list_of_ages)
+    #########################################
+    # Dados dos clientes com loans (owners) #
+    #########################################
+    loans = pd.read_csv('csv_files/dataTrain.csv')
 
-    axs[1, 0].set_title('basic plot')
-    axs[1, 0].boxplot(list_of_ages, 1)
+    list_of_birth_date_year = loans['owner_birth_year_per_account']
+
+    age_avg = round(getAverage(list_of_birth_date_year), 2)
+    age_moda = statistics.mode(list_of_birth_date_year)
+    age_min = min(list_of_birth_date_year)
+    age_max = max(list_of_birth_date_year)
+
+    left_coordinates1 = [1, 2, 3, 4]
+    heights1 = [age_avg, age_moda, age_max, age_min]
+    bar_labels1 = ['Media', 'Moda', 'Max', 'Min']
+    
+    axs[1, 0].set_title("Loan Client Age")
+    axs[1, 0].bar(left_coordinates1, heights1, tick_label=bar_labels1,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[1, 0], left_coordinates1, heights1)
+
+    axs[1, 1].set_title('Loan Client Birth Date Box Plot')
+    axs[1, 1].boxplot(list_of_birth_date_year)
+
+    # print(loans['owner_gender_per_account'])
+    list_of_genders = loans['owner_gender_per_account']
+    count_men = 0
+    count_women = 0
+    for n in list_of_genders:
+        if n == 0:
+            count_men += 1
+        elif n == 1:
+            count_women += 1
+    left_coordinates2 = [1, 2]
+    heights2 = [count_men, count_women]
+    bar_labels2 = ['Men', 'Women']
+    axs[1, 2].set_title("Loan Client Gender")
+    axs[1, 2].bar(left_coordinates2, heights2, tick_label=bar_labels2,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[1, 2], left_coordinates2, heights2)
+
+    #####################################################
+    # Dados dos clientes com loans (owners) com sucesso #
+    #####################################################
+    successful_loans_birth_years = []
+    status = loans['loan_status']
+    birth_years = loans['owner_birth_year_per_account']
+    for i in range(len(status)):
+        if status[i] == 1:
+            successful_loans_birth_years.append(birth_years[i])
+
+    age_avg = round(getAverage(successful_loans_birth_years), 2)
+    age_moda = statistics.mode(successful_loans_birth_years)
+    age_min = min(successful_loans_birth_years)
+    age_max = max(successful_loans_birth_years)
+
+    left_coordinates1 = [1, 2, 3, 4]
+    heights1 = [age_avg, age_moda, age_max, age_min]
+    bar_labels1 = ['Media', 'Moda', 'Max', 'Min']
+    
+    axs[2, 0].set_title("Successful Loan Client Age")
+    axs[2, 0].bar(left_coordinates1, heights1, tick_label=bar_labels1,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[2, 0], left_coordinates1, heights1)
+
+    axs[2, 1].set_title('Successful Loan Client Birth Date Box Plot')
+    axs[2, 1].boxplot(successful_loans_birth_years)
+
+    genders = loans['owner_gender_per_account']
+    successful_loans_genders = []
+    for i in range(len(status)):
+        if status[i] == 1:
+            successful_loans_genders.append(genders[i])
+
+    count_men = 0
+    count_women = 0
+    for n in successful_loans_genders:
+        if n == 0:
+            count_men += 1
+        elif n == 1:
+            count_women += 1
+    left_coordinates2 = [1, 2]
+    heights2 = [count_men, count_women]
+    bar_labels2 = ['Men', 'Women']
+    axs[2, 2].set_title("Successful Loan Client Gender")
+    axs[2, 2].bar(left_coordinates2, heights2, tick_label=bar_labels2,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[2, 2], left_coordinates2, heights2)
+
+    #####################################################
+    # Dados dos clientes com loans (owners) sem sucesso #
+    #####################################################
+    unsuccessful_loans_birth_years = []
+    status = loans['loan_status']
+    birth_years = loans['owner_birth_year_per_account']
+    for i in range(len(status)):
+        if status[i] == -1:
+            unsuccessful_loans_birth_years.append(birth_years[i])
+
+    age_avg = round(getAverage(unsuccessful_loans_birth_years), 2)
+    age_moda = statistics.mode(unsuccessful_loans_birth_years)
+    age_min = min(unsuccessful_loans_birth_years)
+    age_max = max(unsuccessful_loans_birth_years)
+
+    left_coordinates1 = [1, 2, 3, 4]
+    heights1 = [age_avg, age_moda, age_max, age_min]
+    bar_labels1 = ['Media', 'Moda', 'Max', 'Min']
+    
+    axs[3, 0].set_title("Unsuccessful Loan Client Age")
+    axs[3, 0].bar(left_coordinates1, heights1, tick_label=bar_labels1,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[3, 0], left_coordinates1, heights1)
+
+    axs[3, 1].set_title('Unsuccessful Loan Client Birth Date Box Plot')
+    axs[3, 1].boxplot(unsuccessful_loans_birth_years)
+
+    genders = loans['owner_gender_per_account']
+    unsuccessful_loans_genders = []
+    for i in range(len(status)):
+        if status[i] == -1:
+            unsuccessful_loans_genders.append(genders[i])
+
+    count_men = 0
+    count_women = 0
+    for n in unsuccessful_loans_genders:
+        if n == 0:
+            count_men += 1
+        elif n == 1:
+            count_women += 1
+    left_coordinates2 = [1, 2]
+    heights2 = [count_men, count_women]
+    bar_labels2 = ['Men', 'Women']
+    axs[3, 2].set_title("Unsuccessful Loan Client Gender")
+    axs[3, 2].bar(left_coordinates2, heights2, tick_label=bar_labels2,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[3, 2], left_coordinates2, heights2)
 
     plt.show()
     plt.close()
@@ -98,7 +234,7 @@ def display_loan_metrics(data):
 
     axs[0, 0].set_title("Loan Ammount")
     axs[0, 0].bar(left_coordinates1, heights1, tick_label=bar_labels1,
-        width=0.6, color=['red', 'black'])
+        width=0.6, color=['dodgerblue', 'yellowgreen'])
     valuelabel(axs[0, 0], left_coordinates1, heights1)
 
     # Metricas de duration
@@ -115,7 +251,7 @@ def display_loan_metrics(data):
 
     axs[0, 1].set_title("Loan Duration")
     axs[0, 1].bar(left_coordinates2, heights2, tick_label=bar_labels2,
-        width=0.6, color=['red', 'black'])
+        width=0.6, color=['dodgerblue', 'yellowgreen'])
     valuelabel(axs[0, 1], left_coordinates2, heights2)
 
     # Metricas de payments
@@ -132,7 +268,7 @@ def display_loan_metrics(data):
 
     axs[0, 2].set_title("Loan Payments")
     axs[0, 2].bar(left_coordinates3, heights3, tick_label=bar_labels3,
-        width=0.6, color=['red', 'black'])
+        width=0.6, color=['dodgerblue', 'yellowgreen'])
     valuelabel(axs[0, 2], left_coordinates3, heights3)
 
     # Metricas de status
@@ -156,7 +292,7 @@ def display_loan_metrics(data):
 
     axs[1, 0].set_title("Loan Status")
     axs[1, 0].bar(left_coordinates4, heights4, tick_label=bar_labels4,
-        width=0.6, color=['red', 'black'])
+        width=0.6, color=['dodgerblue', 'yellowgreen'])
     valuelabel(axs[1, 0], left_coordinates4, heights4)
 
     # Metricas de Clientes
@@ -176,7 +312,7 @@ def display_loan_metrics(data):
 
     axs[1, 1].set_title("Client Age")
     axs[1, 1].bar(left_coordinates5, heights5, tick_label=bar_labels5,
-        width=0.6, color=['red', 'black'])
+        width=0.6, color=['dodgerblue', 'yellowgreen'])
     valuelabel(axs[1, 1], left_coordinates5, heights5)
 
     # ------ Metricas de Gender
@@ -195,7 +331,7 @@ def display_loan_metrics(data):
     
     axs[1, 2].set_title("Client Gender")
     axs[1, 2].bar(left_coordinates6, heights6, tick_label=bar_labels6,
-        width=0.6, color=['red', 'black'])
+        width=0.6, color=['dodgerblue', 'yellowgreen'])
     valuelabel(axs[1, 2], left_coordinates6, heights6)
 
     # Metricas de transactions
@@ -220,7 +356,7 @@ def display_loan_metrics(data):
     
     axs[2, 0].set_title("Transaction Type")
     axs[2, 0].bar(left_coordinates7, heights7, tick_label=bar_labels7,
-        width=0.6, color=['red', 'black'])
+        width=0.6, color=['dodgerblue', 'yellowgreen'])
     valuelabel(axs[2, 0], left_coordinates7, heights7)
 
     plt.show()
@@ -312,6 +448,10 @@ def display_more_loan_metrics(data):
     plt.title("Status per District")
     plt.legend()
     plt.show()
+    
+    
+
+
     return
 
     left_coordinates2 = [1, 2, 3, 4]
@@ -436,6 +576,203 @@ def display_more_loan_metrics(data):
     plt.show()
     plt.close()
 
+def display_clients_with_loans_metrics(data):
+    fig, axs = plt.subplots(3,3)
+
+    fig.suptitle("Client With Loans Metrics")
+
+    loans = pd.read_csv('csv_files/dataTrain.csv')
+
+    transactions_last_balance_per_account = loans['transactions_last_balance_per_account']
+
+    age_avg = round(getAverage(transactions_last_balance_per_account), 2)
+    age_moda = statistics.mode(transactions_last_balance_per_account)
+    age_min = min(transactions_last_balance_per_account)
+    age_max = max(transactions_last_balance_per_account)
+
+    left_coordinates1 = [1, 2, 3, 4]
+    heights1 = [age_avg, age_moda, age_max, age_min]
+    bar_labels1 = ['Media', 'Moda', 'Max', 'Min']
+    
+    axs[0, 0].set_title(" All Loans Last Transaction Balance")
+    axs[0, 0].bar(left_coordinates1, heights1, tick_label=bar_labels1,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[0, 0], left_coordinates1, heights1)
+
+
+    no_transactions_type_credit_per_account = loans['no_transactions_type_credit_per_account']
+
+    age_avg = round(getAverage(no_transactions_type_credit_per_account), 2)
+    age_moda = statistics.mode(no_transactions_type_credit_per_account)
+    age_min = min(no_transactions_type_credit_per_account)
+    age_max = max(no_transactions_type_credit_per_account)
+
+    left_coordinates1 = [1, 2, 3, 4]
+    heights1 = [age_avg, age_moda, age_max, age_min]
+    bar_labels1 = ['Media', 'Moda', 'Max', 'Min']
+    
+    axs[0, 1].set_title("All Loans Numbers of Credits")
+    axs[0, 1].bar(left_coordinates1, heights1, tick_label=bar_labels1,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[0, 1], left_coordinates1, heights1)
+
+
+    no_transactions_type_withdrawal_per_account = loans['no_transactions_type_withdrawal_per_account']
+
+    age_avg = round(getAverage(no_transactions_type_withdrawal_per_account), 2)
+    age_moda = statistics.mode(no_transactions_type_withdrawal_per_account)
+    age_min = min(no_transactions_type_withdrawal_per_account)
+    age_max = max(no_transactions_type_withdrawal_per_account)
+
+    left_coordinates1 = [1, 2, 3, 4]
+    heights1 = [age_avg, age_moda, age_max, age_min]
+    bar_labels1 = ['Media', 'Moda', 'Max', 'Min']
+    
+    axs[0, 2].set_title("All Loans Numbers of Withdrawals")
+    axs[0, 2].bar(left_coordinates1, heights1, tick_label=bar_labels1,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[0, 2], left_coordinates1, heights1)
+
+    #####################################################
+    # Dados dos clientes com loans (owners) com sucesso #
+    #####################################################
+    loans = pd.read_csv('csv_files/dataTrain.csv')
+
+    status = loans['loan_status']
+    successful_loans_birth_years_last_balance = []
+    transactions_last_balance_per_account = loans['transactions_last_balance_per_account']
+    for i in range(len(status)):
+        if status[i] == 1:
+            successful_loans_birth_years_last_balance.append(transactions_last_balance_per_account[i])
+
+    age_avg = round(getAverage(successful_loans_birth_years_last_balance), 2)
+    age_moda = statistics.mode(successful_loans_birth_years_last_balance)
+    age_min = min(successful_loans_birth_years_last_balance)
+    age_max = max(successful_loans_birth_years_last_balance)
+
+    left_coordinates1 = [1, 2, 3, 4]
+    heights1 = [age_avg, age_moda, age_max, age_min]
+    bar_labels1 = ['Media', 'Moda', 'Max', 'Min']
+    
+    axs[1, 0].set_title("Successful Loans Last Transaction Balance")
+    axs[1, 0].bar(left_coordinates1, heights1, tick_label=bar_labels1,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[1, 0], left_coordinates1, heights1)
+
+
+    no_transactions_type_credit_per_account = loans['no_transactions_type_credit_per_account']
+    successful_loans_no_type_credit = []
+    for i in range(len(status)):
+        if status[i] == 1:
+            successful_loans_no_type_credit.append(no_transactions_type_credit_per_account[i])
+
+    age_avg = round(getAverage(successful_loans_no_type_credit), 2)
+    age_moda = statistics.mode(successful_loans_no_type_credit)
+    age_min = min(successful_loans_no_type_credit)
+    age_max = max(successful_loans_no_type_credit)
+
+    left_coordinates1 = [1, 2, 3, 4]
+    heights1 = [age_avg, age_moda, age_max, age_min]
+    bar_labels1 = ['Media', 'Moda', 'Max', 'Min']
+    
+    axs[1, 1].set_title("Successful Loans Numbers of Credits")
+    axs[1, 1].bar(left_coordinates1, heights1, tick_label=bar_labels1,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[1, 1], left_coordinates1, heights1)
+
+
+    no_transactions_type_withdrawal_per_account = loans['no_transactions_type_withdrawal_per_account']
+    successful_loans_no_type_withdrawal = []
+    for i in range(len(status)):
+        if status[i] == 1:
+            successful_loans_no_type_withdrawal.append(no_transactions_type_credit_per_account[i])
+
+
+    age_avg = round(getAverage(successful_loans_no_type_withdrawal), 2)
+    age_moda = statistics.mode(successful_loans_no_type_withdrawal)
+    age_min = min(successful_loans_no_type_withdrawal)
+    age_max = max(successful_loans_no_type_withdrawal)
+
+    left_coordinates1 = [1, 2, 3, 4]
+    heights1 = [age_avg, age_moda, age_max, age_min]
+    bar_labels1 = ['Media', 'Moda', 'Max', 'Min']
+    
+    axs[1, 2].set_title("Successful Loans Numbers of Withdrawals")
+    axs[1, 2].bar(left_coordinates1, heights1, tick_label=bar_labels1,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[1, 2], left_coordinates1, heights1)
+
+    #####################################################
+    # Dados dos clientes com loans (owners) sem sucesso #
+    #####################################################
+    loans = pd.read_csv('csv_files/dataTrain.csv')
+
+    status = loans['loan_status']
+    unsuccessful_loans_birth_years_last_balance = []
+    transactions_last_balance_per_account = loans['transactions_last_balance_per_account']
+    for i in range(len(status)):
+        if status[i] == -1:
+            unsuccessful_loans_birth_years_last_balance.append(transactions_last_balance_per_account[i])
+
+    age_avg = round(getAverage(unsuccessful_loans_birth_years_last_balance), 2)
+    age_moda = statistics.mode(unsuccessful_loans_birth_years_last_balance)
+    age_min = min(unsuccessful_loans_birth_years_last_balance)
+    age_max = max(unsuccessful_loans_birth_years_last_balance)
+
+    left_coordinates1 = [1, 2, 3, 4]
+    heights1 = [age_avg, age_moda, age_max, age_min]
+    bar_labels1 = ['Media', 'Moda', 'Max', 'Min']
+    
+    axs[2, 0].set_title("Unsuccessful Loans Last Transaction Balance")
+    axs[2, 0].bar(left_coordinates1, heights1, tick_label=bar_labels1,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[2, 0], left_coordinates1, heights1)
+
+
+    no_transactions_type_credit_per_account = loans['no_transactions_type_credit_per_account']
+    unsuccessful_loans_no_type_credit = []
+    for i in range(len(status)):
+        if status[i] == -1:
+            unsuccessful_loans_no_type_credit.append(no_transactions_type_credit_per_account[i])
+
+    age_avg = round(getAverage(unsuccessful_loans_no_type_credit), 2)
+    age_moda = statistics.mode(unsuccessful_loans_no_type_credit)
+    age_min = min(unsuccessful_loans_no_type_credit)
+    age_max = max(unsuccessful_loans_no_type_credit)
+
+    left_coordinates1 = [1, 2, 3, 4]
+    heights1 = [age_avg, age_moda, age_max, age_min]
+    bar_labels1 = ['Media', 'Moda', 'Max', 'Min']
+    
+    axs[2, 1].set_title("Unsuccessful Loans Numbers of Credits")
+    axs[2, 1].bar(left_coordinates1, heights1, tick_label=bar_labels1,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[2, 1], left_coordinates1, heights1)
+
+
+    no_transactions_type_withdrawal_per_account = loans['no_transactions_type_withdrawal_per_account']
+    unsuccessful_loans_no_type_withdrawal = []
+    for i in range(len(status)):
+        if status[i] == -1:
+            unsuccessful_loans_no_type_withdrawal.append(no_transactions_type_credit_per_account[i])
+
+    age_avg = round(getAverage(unsuccessful_loans_no_type_withdrawal), 2)
+    age_moda = statistics.mode(unsuccessful_loans_no_type_withdrawal)
+    age_min = min(unsuccessful_loans_no_type_withdrawal)
+    age_max = max(unsuccessful_loans_no_type_withdrawal)
+
+    left_coordinates1 = [1, 2, 3, 4]
+    heights1 = [age_avg, age_moda, age_max, age_min]
+    bar_labels1 = ['Media', 'Moda', 'Max', 'Min']
+    
+    axs[2, 2].set_title("Unsuccessful Loans Numbers of Withdrawals")
+    axs[2, 2].bar(left_coordinates1, heights1, tick_label=bar_labels1,
+        width=0.3, color=['dodgerblue', 'yellowgreen'])
+    valuelabel(axs[2, 2], left_coordinates1, heights1)
+
+    plt.show()
+    plt.close()
+
 def load_data():
     data = Bank_Data()
     print("Loading districts . . .\n")
@@ -459,6 +796,7 @@ def load_data():
 
 data = load_data()
 
-# display_client_metrics(data)
-# display_loan_metrics(data)
+display_client_metrics(data)
+display_loan_metrics(data)
 display_more_loan_metrics(data)
+display_clients_with_loans_metrics(data)

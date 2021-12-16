@@ -106,11 +106,11 @@ def populate_csv(data, filename):
         no_transactions_type_withdrawal_per_account.append(len(ammounts_withdrawal))
         
         if (len(ammounts_credit) != 0):
-            avg_amount_of_transaction_credit_per_account.append(statistics.mean(ammounts_credit))
+            avg_amount_of_transaction_credit_per_account.append(round(statistics.mean(ammounts_credit), 1))
             median_amount_of_transaction_credit_per_account.append(statistics.median(ammounts_credit))
             max_amount_of_transaction_credit_per_account.append(max(ammounts_credit))
             min_amount_of_transaction_credit_per_account.append(min(ammounts_credit))
-            variance_amount_of_transaction_credit_per_account.append(statistics.pvariance(ammounts_credit))
+            variance_amount_of_transaction_credit_per_account.append(round(statistics.pvariance(ammounts_credit), 1))
         else:
             avg_amount_of_transaction_credit_per_account.append(0)
             median_amount_of_transaction_credit_per_account.append(0)
@@ -119,11 +119,11 @@ def populate_csv(data, filename):
             variance_amount_of_transaction_credit_per_account.append(0)
         
         if (len(ammounts_withdrawal) != 0):
-            avg_amount_of_transaction_withdrawal_per_account.append(statistics.mean(ammounts_withdrawal))
+            avg_amount_of_transaction_withdrawal_per_account.append(round(statistics.mean(ammounts_withdrawal), 1))
             median_amount_of_transaction_withdrawal_per_account.append(statistics.median(ammounts_withdrawal))
             max_amount_of_transaction_withdrawal_per_account.append(max(ammounts_withdrawal))
             min_amount_of_transaction_withdrawal_per_account.append(min(ammounts_withdrawal))
-            variance_amount_of_transaction_withdrawal_per_account.append(statistics.pvariance(ammounts_withdrawal))
+            variance_amount_of_transaction_withdrawal_per_account.append(round(statistics.pvariance(ammounts_withdrawal), 1))
         else:
             avg_amount_of_transaction_withdrawal_per_account.append(0)
             median_amount_of_transaction_withdrawal_per_account.append(0)
@@ -175,8 +175,8 @@ def populate_csv(data, filename):
 
 
     # CLIENTS loan.account_id=disposition.account_id  disposition.client_id=client.client_id
-    client_gender_per_account = []
-    client_birth_year_per_account = []
+    owner_gender_per_account = []
+    owner_birth_year_per_account = []
     # client_no_credit_cards_per_account = []
     client_credit_card_type_per_account = []
     client_credit_card_issue_date_per_account = []
@@ -200,9 +200,12 @@ def populate_csv(data, filename):
     for i in range(len(accounts)):
         disposition = data.get_owner_disposition_from_account(accounts[i])
         
-        client_of_disposition = data.get_clients_of_disposition(disposition[0])
-        client_gender_per_account.append(client_of_disposition[0].get_gender())
-        client_birth_year_per_account.append(client_of_disposition[0].get_birth_date_year())
+        owner_of_disposition = data.get_clients_of_disposition(disposition[0])
+        if owner_of_disposition[0].get_gender() == "Men":
+            owner_gender_per_account.append(0)
+        else:
+            owner_gender_per_account.append(1)
+        owner_birth_year_per_account.append(owner_of_disposition[0].get_birth_date_year())
         
         credit_cards_of_disposition = data.get_credit_cards_of_disposition(disposition[0])
         
@@ -214,7 +217,7 @@ def populate_csv(data, filename):
             client_credit_card_issue_date_per_account.append(0)
 
 
-        demographics = data.get_demograph_from_client(client_of_disposition[0])
+        demographics = data.get_demograph_from_client(owner_of_disposition[0])
 
         # district_name
         # region
@@ -232,8 +235,7 @@ def populate_csv(data, filename):
         # no_of_commited_crimes_95
         # no_of_commited_crimes_96
 
-        all_districts = data.get_districts()
-
+        # all_districts = data.get_districts()
         owner_district_name_per_account.append(demographics[0].get_name())
         owner_region_per_account.append(demographics[0].get_region())
         owner_district_n_inhab_per_account.append(demographics[0].get_n_inhab())
@@ -255,6 +257,56 @@ def populate_csv(data, filename):
     f = open(filename, 'a')
     writer = csv.writer(f)
 
+    labels = []
+    labels.append('loan_id')
+    labels.append('loan_dates_year')
+    labels.append('loan_ammounts')
+    labels.append('loan_durations')
+    labels.append('loan_payments')
+    labels.append('loan_status')
+    labels.append('account_dates_yymd')
+    labels.append('transactions_number_per_account')
+    labels.append('last_transaction_date_per_account')
+    labels.append('transactions_last_balance_per_account')
+    labels.append('no_transactions_type_credit_per_account')
+    labels.append('no_transactions_type_withdrawal_per_account')
+    labels.append('avg_amount_of_transaction_credit_per_account')
+    labels.append('median_amount_of_transaction_credit_per_account')
+    labels.append('max_amount_of_transaction_credit_per_account')
+    labels.append('min_amount_of_transaction_credit_per_account')
+    labels.append('variance_amount_of_transaction_credit_per_account')
+    labels.append('avg_amount_of_transaction_withdrawal_per_account')
+    labels.append('median_amount_of_transaction_withdrawal_per_account')
+    labels.append('max_amount_of_transaction_withdrawal_per_account')
+    labels.append('min_amount_of_transaction_withdrawal_per_account')
+    labels.append('variance_amount_of_transaction_withdrawal_per_account')
+
+    labels.append('no_k_na_of_transaction_per_account')
+    labels.append('no_k_household_of_transaction_per_account')
+    labels.append('no_k_interest_credited_of_transaction_per_account')
+    labels.append('no_k_old_age_pension_of_transaction_per_account')
+    labels.append('no_k_insurrance_payment_of_transaction_per_account')
+    labels.append('no_k_payment_for_statement_of_transaction_per_account')
+    labels.append('no_k_sanction_interest_if_negative_balance_of_transaction_per_account')
+
+    labels.append('owner_gender_per_account')
+    labels.append('owner_birth_year_per_account')
+    labels.append('owner_district_n_inhab_per_account')
+    labels.append('owner_district_n_mun_inhab_0_499_per_account')
+    labels.append('owner_district_n_mun_inhab_500_1999_per_account')
+    labels.append('owner_district_n_mun_inhab_2000_9999_per_account')
+    labels.append('owner_district_n_mun_inhab_10000_inf_per_account')
+    labels.append('owner_district_n_cities_per_account')
+    labels.append('owner_district_ratio_urban_inhab_per_account')
+    labels.append('owner_district_average_salary_per_account')
+    labels.append('owner_district_unemploymant_95_per_account')
+    labels.append('owner_district_unemploymant_96_per_account')
+    labels.append('owner_district_n_enterp_per_1000_per_account')
+    labels.append('owner_district_n_crimes_95_per_account')
+    labels.append('owner_district_n_crimes_96_per_account')
+
+    writer.writerow(labels)
+
     for i in range(len(loans)):
         row = []
 
@@ -267,7 +319,7 @@ def populate_csv(data, filename):
 
         # row.append(account_ids[i])  # ?
         row.append(account_dates[i].get_yymmdd())
-        row.append(account_frequency[i].value)
+        # row.append(account_frequency[i].value)
         
         row.append(transactions_number_per_account[i])
         row.append(last_transaction_date_per_account[i])
@@ -297,11 +349,10 @@ def populate_csv(data, filename):
         row.append(no_k_payment_for_statement_of_transaction_per_account[i])
         row.append(no_k_sanction_interest_if_negative_balance_of_transaction_per_account[i])
         
+        row.append(owner_gender_per_account[i])
+        row.append(owner_birth_year_per_account[i])
         # row.append(owner_district_name_per_account[i])
         # row.append(owner_region_per_account[i])
-        row.append(owner_district_n_inhab_per_account[i])
-        row.append(owner_district_n_inhab_per_account[i])
-        row.append(owner_district_n_inhab_per_account[i])
         row.append(owner_district_n_inhab_per_account[i])
         row.append(owner_district_n_mun_inhab_0_499_per_account[i])
         row.append(owner_district_n_mun_inhab_500_1999_per_account[i])
