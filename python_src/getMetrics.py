@@ -6,6 +6,7 @@ from data.transaction import Transaction
 from data.enum_types import TransactionType
 import statistics
 from data.bank_data import Bank_Data
+import numpy as np 
 
 
 def getAverage(list):
@@ -248,24 +249,71 @@ def display_more_loan_metrics(data):
     # client_of_disposition = data.get_clients_of_disposition(disposition[0])
     # aux = list(zip(list_of_ammounts, list_of_ages))
 
-    print(len(list_of_ammounts))
-    print(len(accounts_with_loans))
+    ammounts = []
+    ages = []
+
+    districts_success = [[0,0]] * len(data.districts)
+
+    for i in range(len(data.loans)):
+        owner = data.get_account_owner(data.loans[i].account.id)
+        ages.append(owner.get_birth_date_year())
+        ammounts.append(data.loans[i].ammount)
+        
+        id = owner.district.code - 1
+        new_pos = 0
+        if data.loans[i].status == 1:
+            new_pos = districts_success[id][0] + 1
+        else:
+            new_pos = districts_success[id][0]
+        new_total = districts_success[id][1] + 1
+        districts_success[id] = [new_pos, new_total]
+
+    print (districts_success)
+
+    
+    districts_names = []
+    districts_succ = []
+    districts_total = []
+
+    for i in range(len(districts_success)):
+        #if districts_success[i][1] == 0:
+        #    districts_success[i] = 0
+        #else:
+        #    districts_success[i] = districts_success[i][0]/districts_success[i][1]
+        districts_succ.append(districts_success[i][0])
+        districts_total.append(districts_success[i][1])
+        #districts_names.append(str(data.districts[i].code))
+        districts_names.append(str(data.districts[i].code))
+
 
     avgs = []
-    for i in range(min(list_of_ages), max(list_of_ages)+1):
+    for i in range(min(ages), max(ages)+1):
         count_total = 0
         count_sum = 0
-        for j in range(len(accounts_with_loans)):
-            if data.get_clients_of_disposition(data.get_owner_disposition_from_account(accounts_with_loans[j])[0])[0].get_birth_date_year() == i:
+        for j in range(len(ages)):
+            if ages[j] == i:
                 count_total += 1
                 count_sum += list_of_ammounts[j]
-        avgs.append(count_sum/count_total)
+        if count_total == 0:
+            avgs.append((i, 0))
+        else:
+            avgs.append((i ,count_sum/count_total))   
 
-    print(avgs)
-   
+
+    plt.plot(avgs)
+    plt.show()
 
 
-    # plt.plot(aux)
+    X_axis = np.arange(len(districts_names))
+  
+    plt.bar(X_axis - 0.2, districts_succ, 0.4, label = 'Success')
+    plt.bar(X_axis + 0.2, districts_total, 0.4, label = 'Total')
+    
+    plt.xticks(X_axis, districts_names)
+    plt.xlabel("Districts")
+    plt.ylabel("Number of Loans")
+    plt.title("Status per District")
+    plt.legend()
     plt.show()
     return
 

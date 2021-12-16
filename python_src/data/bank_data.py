@@ -265,6 +265,15 @@ class Bank_Data:
             result.append(get(element))
         return result
 
+    def get_account_owner(self, account_id):
+        owner_id = 0
+        for i in range(len(self.dispositions)):
+            if self.dispositions[i].account.id == account_id and self.dispositions[i].ownership == Ownership.Owner:
+                owner_id = self.dispositions[i].client.id
+                break
+        
+        return self.get_by_id(self.clients, owner_id)
+
     def print(self):
         # for district in self.districts:
         #    district.print()
