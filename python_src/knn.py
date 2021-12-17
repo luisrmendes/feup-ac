@@ -134,12 +134,12 @@ def tarin_using_entropy(X_train, X_test, y_train):
 def train_using_svc(X_train, X_test, y_train):
   
     # Creating the classifier object
-    #SVC_model = SVC()
-    KNN_model = KNeighborsClassifier(n_neighbors=5)
-    #SVC_model.fit(X_train, y_train)
-    KNN_model.fit(X_train, y_train)
+    SVC_model = SVC()
+    # KNN_model = KNeighborsClassifier(n_neighbors=5)
+    SVC_model.fit(X_train, y_train)
+    # KNN_model.fit(X_train, y_train)
   
-    return KNN_model
+    return SVC_model
 
 # Function to make predictions
 def prediction(X_test, clf_object):
@@ -170,8 +170,8 @@ data, test_data = importdata()
 X_train, y_train, X_test = getfinaldata(data, test_data)
 X, Y, X_train, X_test, y_train, y_test = splitdataset(data)
 
-clf_gini = train_using_gini(X_train, X_test, y_train)
-clf_entropy = tarin_using_entropy(X_train, X_test, y_train)
+# clf_gini = train_using_gini(X_train, X_test, y_train)
+# clf_entropy = tarin_using_entropy(X_train, X_test, y_train)
 svc = train_using_svc(X_train, X_test, y_train)
       
 # Operational Phase

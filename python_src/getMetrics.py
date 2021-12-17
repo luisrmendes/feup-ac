@@ -11,8 +11,6 @@ import csv
 import pandas as pd
 
 
-
-
 def getAverage(list):
     sum_num = 0
     for t in list:
@@ -31,7 +29,7 @@ def display_client_metrics(data):
 
     list_clients = data.clients
 
-    fig, axs = plt.subplots(4,3)
+    fig, axs = plt.subplots(4,3, constrained_layout = True)
 
     fig.suptitle("Client Metrics")
 
@@ -52,7 +50,9 @@ def display_client_metrics(data):
         width=0.3, color=['dodgerblue', 'yellowgreen'])
     valuelabel(axs[0, 0], left_coordinates1, heights1)
 
+
     axs[0, 1].set_title('Client Birth Date Box Plot')
+    axs[0, 1].set_ylim([10, 90])
     axs[0, 1].boxplot(list_of_birth_date_year)
 
     # Metricas de Gender
@@ -95,6 +95,7 @@ def display_client_metrics(data):
     valuelabel(axs[1, 0], left_coordinates1, heights1)
 
     axs[1, 1].set_title('Loan Client Birth Date Box Plot')
+    axs[1, 1].set_ylim([10, 90])
     axs[1, 1].boxplot(list_of_birth_date_year)
 
     # print(loans['owner_gender_per_account'])
@@ -139,6 +140,7 @@ def display_client_metrics(data):
     valuelabel(axs[2, 0], left_coordinates1, heights1)
 
     axs[2, 1].set_title('Successful Loan Client Birth Date Box Plot')
+    axs[2, 1].set_ylim([10, 90])
     axs[2, 1].boxplot(successful_loans_birth_years)
 
     genders = loans['owner_gender_per_account']
@@ -187,6 +189,7 @@ def display_client_metrics(data):
     valuelabel(axs[3, 0], left_coordinates1, heights1)
 
     axs[3, 1].set_title('Unsuccessful Loan Client Birth Date Box Plot')
+    axs[3, 1].set_ylim([10, 90])
     axs[3, 1].boxplot(unsuccessful_loans_birth_years)
 
     genders = loans['owner_gender_per_account']
@@ -217,7 +220,7 @@ def display_loan_metrics(data):
     print("Generating Loan Metrics . . .\n")
 
     list_loans = data.loans
-    fig, axs = plt.subplots(3, 3)
+    fig, axs = plt.subplots(3, 3, constrained_layout = True)
     fig.suptitle("Loan Metrics")
 
     # Metricas de ammount
@@ -577,7 +580,7 @@ def display_more_loan_metrics(data):
     plt.close()
 
 def display_clients_with_loans_metrics(data):
-    fig, axs = plt.subplots(3,3)
+    fig, axs = plt.subplots(3,3, constrained_layout = True)
 
     fig.suptitle("Client With Loans Metrics")
 
@@ -685,7 +688,7 @@ def display_clients_with_loans_metrics(data):
     successful_loans_no_type_withdrawal = []
     for i in range(len(status)):
         if status[i] == 1:
-            successful_loans_no_type_withdrawal.append(no_transactions_type_credit_per_account[i])
+            successful_loans_no_type_withdrawal.append(no_transactions_type_withdrawal_per_account[i])
 
 
     age_avg = round(getAverage(successful_loans_no_type_withdrawal), 2)
@@ -754,7 +757,7 @@ def display_clients_with_loans_metrics(data):
     unsuccessful_loans_no_type_withdrawal = []
     for i in range(len(status)):
         if status[i] == -1:
-            unsuccessful_loans_no_type_withdrawal.append(no_transactions_type_credit_per_account[i])
+            unsuccessful_loans_no_type_withdrawal.append(no_transactions_type_withdrawal_per_account[i])
 
     age_avg = round(getAverage(unsuccessful_loans_no_type_withdrawal), 2)
     age_moda = statistics.mode(unsuccessful_loans_no_type_withdrawal)
@@ -788,15 +791,15 @@ def load_data():
     data.add_loans("data/ficheiros_competicao/loan_train.csv")
     print("Loading train cards . . .\n")
     data.add_cards("data/ficheiros_competicao/card_train.csv")
-    # print("Loading train transactions . . .\n")
-    # data.add_transactions("data/ficheiros_competicao/trans_train.csv")
+    print("Loading train transactions . . .\n")
+    data.add_transactions("data/ficheiros_competicao/trans_train.csv")
 
     return data
 
 
 data = load_data()
 
-display_client_metrics(data)
 display_loan_metrics(data)
+display_client_metrics(data)
 display_more_loan_metrics(data)
 display_clients_with_loans_metrics(data)

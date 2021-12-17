@@ -85,7 +85,7 @@ def populate_csv(data, filename):
 
         transactions_number_per_account.append(len(account_transactions))
         
-        last_transaction = account_transactions[0];
+        last_transaction = account_transactions[0]
         for transaction in account_transactions:
             if transaction.get_date().get_yymmdd() > last_transaction.get_date().get_yymmdd():
                 last_transaction = transaction

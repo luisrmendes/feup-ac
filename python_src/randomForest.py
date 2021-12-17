@@ -100,13 +100,6 @@ train_features = train_features.drop(train_features.columns[0], axis = 1)
 
 
 
-
-
-
-
-
-
-
 # Convert to numpy array
 train_features = np.array(train_features)
 if to_csv: test_features = np.array(test_features)
@@ -205,9 +198,9 @@ if not to_csv:
         mape_acc.append(accuracy)
         #print('Accuracy:', round(accuracy, 2), '%.')
 
-    print("Accuracy", round(sum(acc)/len(acc), 2))
+    print("Confusion Matrix Accuracy: ", round(sum(acc)/len(acc), 2))
     # print("Mape Accuracy", round(sum(mape_acc)/len(mape_acc), 2))
-    print("Auc", round(sum(auc_score)/len(auc_score), 2))
+    print("AUC: ", round(sum(auc_score)/len(auc_score), 2))
 
 else:
     result = []
