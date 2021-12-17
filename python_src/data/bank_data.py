@@ -135,8 +135,30 @@ class Bank_Data:
             
         districts.pop(0)
 
+        unemploymant_rate_95_sum = 0
+        unemploymant_rate_95_total = 0
+        n_commited_crimes_95_sum = 0
+        n_commited_crimes_95_total = 0
+
         for district in districts:
             self.districts.append(District(district[0], district[1], district[2], district[3], district[4], district[5], district[6], district[7], district[8], district[9], district[10], district[11], district[12], district[13], district[14], district[15]))
+            if(self.districts[len(self.districts) - 1].unemploymant_95 != -1):
+                unemploymant_rate_95_sum += self.districts[len(self.districts) - 1].unemploymant_95
+                unemploymant_rate_95_total += 1
+            else: print('aaa')
+            if(self.districts[len(self.districts) - 1].unemploymant_95 != -1):
+                n_commited_crimes_95_sum += self.districts[len(self.districts) - 1].n_crimes_95
+                n_commited_crimes_95_total += 1
+            else: print('bbb')
+        
+        unemploymant_rate_95_avg = unemploymant_rate_95_sum/unemploymant_rate_95_total
+        n_commited_crimes_95_avg = n_commited_crimes_95_sum/n_commited_crimes_95_total
+
+        for district in self.districts:
+            if district.unemploymant_95 == -1:
+                district.unemploymant_95 = unemploymant_rate_95_avg
+            if district.n_crimes_95 == -1:
+                district.n_crimes_95 = n_commited_crimes_95_avg
 
     def add_clients(self, file):
         with open(file, newline='') as csvfile:
