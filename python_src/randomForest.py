@@ -95,9 +95,52 @@ train_features = train_features.drop(train_features.columns[4], axis = 1)
 # train_features = train_features.drop(train_features.columns[3], axis = 1)
 # train_features = train_features.drop(train_features.columns[2], axis = 1)
 train_features = train_features.drop(train_features.columns[1], axis = 1)
-train_features = train_features.drop(train_features.columns[0], axis = 1)
+# train_features = train_features.drop(train_features.columns[0], axis = 1)
 
-
+if to_csv:
+    test_features = test_features.drop(test_features.columns[42], axis = 1)
+    test_features = test_features.drop(test_features.columns[41], axis = 1)
+    test_features = test_features.drop(test_features.columns[40], axis = 1)
+    test_features = test_features.drop(test_features.columns[39], axis = 1)
+    test_features = test_features.drop(test_features.columns[38], axis = 1)
+    test_features = test_features.drop(test_features.columns[37], axis = 1)
+    test_features = test_features.drop(test_features.columns[36], axis = 1)
+    test_features = test_features.drop(test_features.columns[35], axis = 1)
+    test_features = test_features.drop(test_features.columns[34], axis = 1)
+    test_features = test_features.drop(test_features.columns[33], axis = 1)
+    test_features = test_features.drop(test_features.columns[32], axis = 1)
+    test_features = test_features.drop(test_features.columns[31], axis = 1)
+    test_features = test_features.drop(test_features.columns[30], axis = 1)
+    test_features = test_features.drop(test_features.columns[29], axis = 1)
+    test_features = test_features.drop(test_features.columns[28], axis = 1)
+    # test_features = test_features.drop(test_features.columns[27], axis = 1)
+    test_features = test_features.drop(test_features.columns[26], axis = 1)
+    test_features = test_features.drop(test_features.columns[25], axis = 1)
+    test_features = test_features.drop(test_features.columns[24], axis = 1)
+    test_features = test_features.drop(test_features.columns[23], axis = 1)
+    test_features = test_features.drop(test_features.columns[22], axis = 1)
+    test_features = test_features.drop(test_features.columns[21], axis = 1)
+    test_features = test_features.drop(test_features.columns[20], axis = 1)
+    test_features = test_features.drop(test_features.columns[19], axis = 1)
+    test_features = test_features.drop(test_features.columns[18], axis = 1)
+    test_features = test_features.drop(test_features.columns[17], axis = 1)
+    test_features = test_features.drop(test_features.columns[16], axis = 1)
+    test_features = test_features.drop(test_features.columns[15], axis = 1)
+    test_features = test_features.drop(test_features.columns[14], axis = 1)
+    test_features = test_features.drop(test_features.columns[13], axis = 1)
+    test_features = test_features.drop(test_features.columns[12], axis = 1)
+    test_features = test_features.drop(test_features.columns[11], axis = 1)  # better accuracy
+    test_features = test_features.drop(test_features.columns[10], axis = 1)  # better accuracy
+    # test_features = test_features.drop(test_features.columns[9], axis = 1)
+    # test_features = test_features.drop(test_features.columns[8], axis = 1)
+    # test_features = test_features.drop(test_features.columns[7], axis = 1)
+    test_features = test_features.drop(test_features.columns[6], axis = 1)   # better accuracy 
+    test_features = test_features.drop(test_features.columns[5], axis = 1)
+    test_features = test_features.drop(test_features.columns[4], axis = 1)
+    # test_features = test_features.drop(test_features.columns[3], axis = 1)
+    # test_features = test_features.drop(test_features.columns[2], axis = 1)
+    test_features = test_features.drop(test_features.columns[1], axis = 1)
+    # test_features = test_features.drop(test_features.columns[0], axis = 1)
 
 
 # Convert to numpy array
@@ -132,6 +175,7 @@ rf = RandomForestRegressor(n_estimators = 200, random_state = 42, min_samples_le
 # Train the model on training data
 predictions = 0
 if to_csv:
+    print(labels)
     rf.fit(train_features, labels)
     predictions = rf.predict(test_features)
 #else:
