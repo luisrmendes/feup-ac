@@ -12,6 +12,8 @@ Data = pd.read_csv(
         'csv_files/dataTrain.csv',
         sep= ',', header = None)
 
+Data = Data.iloc[1: , :]
+
 Data = Data.values[:, 1:]
 Data = pd.DataFrame(Data)
 labels =['loan_ids',
@@ -63,7 +65,7 @@ labels =['loan_ids',
 
 scaler = MinMaxScaler()
 
-for i in range(44):
+for i in range(len(Data.columns)):
     scaler.fit(Data[[i]])
     Data[[i]] = scaler.transform(Data[[i]])
 
@@ -171,7 +173,7 @@ print("Silhouette score is {})".format(score))
 
 #View graphs-----------------------------------------------------------------------
 '''
-for i in range(44):
+for i in range(len(Data.columns)):
     plt.scatter(Data[i], np.zeros_like(Data[i]) + 0, c= dbscan_results.astype(float), s=50, alpha=0.5)
     fig = plt.gcf()
     fig.canvas.manager.set_window_title(labels[i+1])
